@@ -1,0 +1,23 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/debian
+{
+    "name": "heinerbloch",
+    "build": {
+      "dockerfile": "Dockerfile"
+    },
+    "customizations": {
+      "vscode": {
+        "extensions": [
+          "ms-vscode.cpptools",
+          "ms-vscode.cpptools-extension-pack",
+          "EditorConfig.EditorConfig"
+        ]
+      }
+    },
+    "mounts": [
+      // "type=bind,source=/dev/ttyUSB0,target=/dev/ttyUSB0"
+    ],
+    "runArgs": [
+      // "--privileged" // might be required for hardware access (serial upload)
+    ]
+}
