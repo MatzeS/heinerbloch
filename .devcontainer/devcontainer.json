@@ -14,10 +14,7 @@
         ]
       }
     },
-    "mounts": [
-      // "type=bind,source=/dev/ttyUSB0,target=/dev/ttyUSB0"
-    ],
     "runArgs": [
-      // "--privileged" // might be required for hardware access (serial upload)
+      "--device=/dev/bus/usb"
     ]
 }
