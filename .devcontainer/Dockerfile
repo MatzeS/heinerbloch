@@ -31,3 +31,7 @@ RUN rm /opt/install-pico-sdk.sh
 COPY install-openocd.sh /opt/install-openocd.sh
 RUN /opt/install-openocd.sh
 RUN rm /opt/install-openocd.sh
+
+# Install Rake
+RUN apt-get -y install ruby
+RUN gem install rake
