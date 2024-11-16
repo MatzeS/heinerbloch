@@ -22,3 +22,22 @@ namespace "dev" do
   end
 
 end
+
+build_directory = "build"
+
+desc "build the firmware"
+task "build" do
+    if not File.directory?(build_directory)
+        Dir.mkdir(build_directory)
+    end
+
+    Dir.chdir(build_directory) do
+        sh "cmake -D PICO_SDK_PATH=/opt/pico-sdk/ -D PICO_PLATFORM=rp2350 -D PICO_BOARD=solderparty_rp2350_stamp_xl -G Ninja .."
+        sh "ninja"
+    end
+end
+
+desc "flash firmware to pico via debug probe"
+task "flash" do
+    sh "openocd -f interface/cmsis-dap.cfg -f target/rp2350.cfg -c \"adapter speed 5000\" -c \"program #{build_directory}/heinerbloch.elf verify reset exit\""
+end
