@@ -19,5 +19,6 @@ add_executable(heinerbloch
 target_link_libraries(heinerbloch
     pico_stdlib
     no-OS-FatFS-SD-SDIO-SPI-RPi-Pico
+    expected
 )
 pico_add_extra_outputs(heinerbloch)

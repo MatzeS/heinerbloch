@@ -1,3 +1,6 @@
 [submodule "libs/no-OS-FatFS-SD-SDIO-SPI-RPi-Pico"]
 	path = libs/no-OS-FatFS-SD-SDIO-SPI-RPi-Pico
 	url = https://github.com/carlk3/no-OS-FatFS-SD-SDIO-SPI-RPi-Pico
+[submodule "libs/expected"]
+	path = libs/expected
+	url = https://github.com/TartanLlama/expected
