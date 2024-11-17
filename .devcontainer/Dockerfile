@@ -12,11 +12,14 @@ RUN apt-get -y install \
     tar \
     python3 \
     python3-pip \
-    python3-venv
+    python3-venv \
+    pre-commit
 
 RUN apt-get -y install \
     build-essential \
     cmake \
+    clang-format \
+    clang-tidy \
     ninja-build \
     gcc-arm-none-eabi \
     libnewlib-arm-none-eabi \
