@@ -35,6 +35,11 @@ COPY install-openocd.sh /opt/install-openocd.sh
 RUN /opt/install-openocd.sh
 RUN rm /opt/install-openocd.sh
 
+# Install arm gnu toolchain
+COPY install-arm-gnu-toolchain.sh /opt/install-arm-gnu-toolchain.sh
+RUN /opt/install-arm-gnu-toolchain.sh
+RUN rm /opt/install-arm-gnu-toolchain.sh
+
 # Install Rake
 RUN apt-get -y install ruby
 RUN gem install rake

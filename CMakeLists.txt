@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 3.13...3.27)
 include(pico_sdk_import.cmake)
+
+set(CMAKE_C_COMPILER "/opt/arm-gnu-toolchain/bin/arm-none-eabi-gcc")
+set(CMAKE_CXX_COMPILER "/opt/arm-gnu-toolchain/bin/arm-none-eabi-g++")
+
 project(heinerbloch)
 pico_sdk_init()
 set(CMAKE_CXX_STANDARD 20)
