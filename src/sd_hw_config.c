@@ -25,7 +25,7 @@ https://github.com/carlk3/no-OS-FatFS-SD-SDIO-SPI-RPi-Pico/tree/main#customizing
 static spi_t spi = {
     .hw_inst = spi1,  // SPI component
 
-    .sck_gpio = 10,    // GPIO number (not Pico pin number)
+    .sck_gpio = 10,  // GPIO number (not Pico pin number)
     .mosi_gpio = 11,
     .miso_gpio = 8,
 
@@ -52,7 +52,9 @@ static sd_card_t sd_card = {
 
 /* ********************************************************************** */
 
-size_t sd_get_num() { return 1; }
+size_t sd_get_num() {
+  return 1;
+}
 
 /**
  * @brief Get a pointer to an SD card object by its number.
@@ -61,15 +63,15 @@ size_t sd_get_num() { return 1; }
  *
  * @return A pointer to the SD card object, or @c NULL if the number is invalid.
  */
-sd_card_t *sd_get_by_num(size_t num) {
-    if (0 == num) {
-        // The number 0 is a valid SD card number.
-        // Return a pointer to the sd_card object.
-        return &sd_card;
-    } else {
-        // The number is invalid. Return @c NULL.
-        return NULL;
-    }
+sd_card_t* sd_get_by_num(size_t num) {
+  if (0 == num) {
+    // The number 0 is a valid SD card number.
+    // Return a pointer to the sd_card object.
+    return &sd_card;
+  } else {
+    // The number is invalid. Return @c NULL.
+    return NULL;
+  }
 }
 
 /* [] END OF FILE */

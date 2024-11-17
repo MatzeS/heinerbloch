@@ -18,9 +18,9 @@ specific language governing permissions and limitations under the License.
 //
 #include "pico/stdlib.h"
 //
-#include "hw_config.h"
 #include "f_util.h"
 #include "ff.h"
+#include "hw_config.h"
 
 /**
  * @file main.c
@@ -33,52 +33,51 @@ specific language governing permissions and limitations under the License.
  * - Closing a file and unmounting the SD card
  */
 
-#include <iostream>
 #include <filesystem>
 #include <fstream>
+#include <iostream>
 
 int main() {
-    // Initialize stdio
-    stdio_init_all();
+  // Initialize stdio
+  stdio_init_all();
 
-    puts("Hello, world!");
+  puts("Hello, world!");
 
-    std::filesystem::path path{ "/well/x.txt" };
-    // std::filesystem::create_directories(path.parent_path());
-    std::ofstream ofs(path);
-    ofs << "this is some text in the new file\n";
-    ofs.close();
+  std::filesystem::path path{"/well/x.txt"};
+  // std::filesystem::create_directories(path.parent_path());
+  std::ofstream ofs(path);
+  ofs << "this is some text in the new file\n";
+  ofs.close();
 
+  // See FatFs - Generic FAT Filesystem Module, "Application Interface",
+  // http://elm-chan.org/fsw/ff/00index_e.html
+  FATFS fs;
+  FRESULT fr = f_mount(&fs, "", 1);
+  if (FR_OK != fr) {
+    panic("f_mount error: %s (%d)\n", FRESULT_str(fr), fr);
+  }
 
+  // Open a file and write to it
+  FIL fil;
+  const char* const filename = "filename.txt";
+  fr = f_open(&fil, filename, FA_OPEN_APPEND | FA_WRITE);
+  if (FR_OK != fr && FR_EXIST != fr) {
+    panic("f_open(%s) error: %s (%d)\n", filename, FRESULT_str(fr), fr);
+  }
+  if (f_printf(&fil, "Hello, world!\n") < 0) {
+    printf("f_printf failed\n");
+  }
 
-    // See FatFs - Generic FAT Filesystem Module, "Application Interface",
-    // http://elm-chan.org/fsw/ff/00index_e.html
-    FATFS fs;
-    FRESULT fr = f_mount(&fs, "", 1);
-    if (FR_OK != fr) {
-        panic("f_mount error: %s (%d)\n", FRESULT_str(fr), fr);
-    }
+  // Close the file
+  fr = f_close(&fil);
+  if (FR_OK != fr) {
+    printf("f_close error: %s (%d)\n", FRESULT_str(fr), fr);
+  }
 
-    // Open a file and write to it
-    FIL fil;
-    const char* const filename = "filename.txt";
-    fr = f_open(&fil, filename, FA_OPEN_APPEND | FA_WRITE);
-    if (FR_OK != fr && FR_EXIST != fr) {
-        panic("f_open(%s) error: %s (%d)\n", filename, FRESULT_str(fr), fr);
-    }
-    if (f_printf(&fil, "Hello, world!\n") < 0) {
-        printf("f_printf failed\n");
-    }
+  // Unmount the SD card
+  f_unmount("");
 
-    // Close the file
-    fr = f_close(&fil);
-    if (FR_OK != fr) {
-        printf("f_close error: %s (%d)\n", FRESULT_str(fr), fr);
-    }
-
-    // Unmount the SD card
-    f_unmount("");
-
-    puts("Goodbye, world!");
-    for (;;);
+  puts("Goodbye, world!");
+  for (;;)
+    ;
 }
