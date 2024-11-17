@@ -33,6 +33,7 @@ task 'build' do
       ' -D PICO_SDK_PATH=/opt/pico-sdk/' \
       ' -D PICO_PLATFORM=rp2350' \
       ' -D PICO_BOARD=solderparty_rp2350_stamp_xl' \
+      ' -D CMAKE_EXPORT_COMPILE_COMMANDS=ON' \
       ' -G Ninja ..'
     sh 'ninja'
   end
