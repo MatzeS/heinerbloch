@@ -1,13 +1,13 @@
+# frozen_string_literal: true
 
-desc "devcontainer related commands"
-namespace "dev" do
-
-  desc "starts the dev container"
+desc 'devcontainer related commands'
+namespace 'dev' do
+  desc 'starts the dev container'
   task :start do
-    sh "devcontainer up --workspace-folder ."
+    sh 'devcontainer up --workspace-folder .'
   end
 
-  desc "stops the dev container"
+  desc 'stops the dev container'
   task :stop do
     sh "docker stop $(docker ps | grep vsc-heinerbloch | awk '{print $1}')"
   end
@@ -16,43 +16,48 @@ namespace "dev" do
     sh "docker remove $(docker ps -a | grep vsc-heinerbloch | awk '{print $1}')"
   end
 
-  desc "enters the dev container"
+  desc 'enters the dev container'
   task :enter do
-    sh "devcontainer exec --workspace-folder . bash"
+    sh 'devcontainer exec --workspace-folder . bash'
   end
-
 end
 
-build_directory = "build"
+build_directory = 'build'
 
-desc "build the firmware"
-task "build" do
-    if not File.directory?(build_directory)
-        Dir.mkdir(build_directory)
-    end
+desc 'build the firmware'
+task 'build' do
+  Dir.mkdir(build_directory) unless File.directory?(build_directory)
 
-    Dir.chdir(build_directory) do
-        sh "cmake -D PICO_SDK_PATH=/opt/pico-sdk/ -D PICO_PLATFORM=rp2350 -D PICO_BOARD=solderparty_rp2350_stamp_xl -G Ninja .."
-        sh "ninja"
-    end
+  Dir.chdir(build_directory) do
+    sh 'cmake' \
+      ' -D PICO_SDK_PATH=/opt/pico-sdk/' \
+      ' -D PICO_PLATFORM=rp2350' \
+      ' -D PICO_BOARD=solderparty_rp2350_stamp_xl' \
+      ' -G Ninja ..'
+    sh 'ninja'
+  end
 end
 
-desc "flash firmware to pico via debug probe"
-task "flash" do
-    sh "openocd -f interface/cmsis-dap.cfg -f target/rp2350.cfg -c \"adapter speed 5000\" -c \"program #{build_directory}/heinerbloch.elf verify reset exit\""
+desc 'flash firmware to pico via debug probe'
+task 'flash' do
+  sh 'openocd' \
+    ' -f interface/cmsis-dap.cfg' \
+    ' -f target/rp2350.cfg' \
+    ' -c "adapter speed 5000"' \
+    " -c \"program #{build_directory}/heinerbloch.elf verify reset exit\""
 end
 
-namespace "setup" do
+namespace 'setup' do
   task :udev_rules do
-    rules_file = "/etc/udev/rules.d/pico-debug-probe.rules"
+    rules_file = '/etc/udev/rules.d/pico-debug-probe.rules'
     if File.exist?(rules_file)
       puts "#{rules_file} file already exists. Not changing any files."
     else
-      File.open(rules_file, 'w') {|f|
+      File.open(rules_file, 'w') do |f|
         f.write('SUBSYSTEM=="usb", ATTRS{idVendor}=="2e8a", ATTRS{idProduct}=="000c", MODE="0666"')
-      }
+      end
     end
-    sh "udevadm control --reload-rules"
-    sh "udevadm trigger"
+    sh 'udevadm control --reload-rules'
+    sh 'udevadm trigger'
   end
 end
