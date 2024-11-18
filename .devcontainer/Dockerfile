@@ -40,6 +40,11 @@ COPY install-arm-gnu-toolchain.sh /opt/install-arm-gnu-toolchain.sh
 RUN /opt/install-arm-gnu-toolchain.sh
 RUN rm /opt/install-arm-gnu-toolchain.sh
 
+# Install picotool
+COPY install-picotool.sh /opt/install-picotool.sh
+RUN /opt/install-picotool.sh
+RUN rm /opt/install-picotool.sh
+
 # Install Rake
 RUN apt-get -y install ruby
 RUN gem install rake
