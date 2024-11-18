@@ -18,11 +18,18 @@ add_subdirectory(libs)
 
 add_executable(heinerbloch
     src/main.cpp
-    src/sd_hw_config.cpp
 )
+target_include_directories(heinerbloch
+    PRIVATE
+    src
+)
+pico_enable_filesystem(heinerbloch FS_INIT src/fs_init.cpp)
 target_link_libraries(heinerbloch
+    PRIVATE
     pico_stdlib
-    no-OS-FatFS-SD-SDIO-SPI-RPi-Pico
+    pico_filesystem
+    pico_filesystem_filesystem_fat
+    pico_filesystem_blockdevice_sd
     expected
 )
 pico_add_extra_outputs(heinerbloch)
