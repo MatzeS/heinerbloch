@@ -4,8 +4,13 @@ FROM mcr.microsoft.com/devcontainers/base:bookworm
 RUN apt-get -y update
 RUN apt-get -y upgrade
 
+# Install arm gnu toolchain
+# (Moved to the top because it is the largest download)
+COPY install-arm-gnu-toolchain.sh /opt/install-arm-gnu-toolchain.sh
+RUN /opt/install-arm-gnu-toolchain.sh
+RUN rm /opt/install-arm-gnu-toolchain.sh
+
 # System packages
-## General stuff
 RUN apt-get -y install \
     git \
     vim \
@@ -25,26 +30,21 @@ RUN apt-get -y install \
     libnewlib-arm-none-eabi \
     libstdc++-arm-none-eabi-newlib
 
-# Install Pico SDK
-COPY install-pico-sdk.sh /opt/install-pico-sdk.sh
-RUN /opt/install-pico-sdk.sh
-RUN rm /opt/install-pico-sdk.sh
+# Install Rake
+RUN apt-get -y install ruby
+RUN gem install rake
 
 # Install OpenOCD
 COPY install-openocd.sh /opt/install-openocd.sh
 RUN /opt/install-openocd.sh
 RUN rm /opt/install-openocd.sh
 
-# Install arm gnu toolchain
-COPY install-arm-gnu-toolchain.sh /opt/install-arm-gnu-toolchain.sh
-RUN /opt/install-arm-gnu-toolchain.sh
-RUN rm /opt/install-arm-gnu-toolchain.sh
+# Install Pico SDK
+COPY install-pico-sdk.sh /opt/install-pico-sdk.sh
+RUN /opt/install-pico-sdk.sh
+RUN rm /opt/install-pico-sdk.sh
 
 # Install picotool
 COPY install-picotool.sh /opt/install-picotool.sh
 RUN /opt/install-picotool.sh
 RUN rm /opt/install-picotool.sh
-
-# Install Rake
-RUN apt-get -y install ruby
-RUN gem install rake
