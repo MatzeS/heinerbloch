@@ -34,6 +34,7 @@ task 'build' do
       ' -D PICO_PLATFORM=rp2350' \
       ' -D PICO_BOARD=solderparty_rp2350_stamp_xl' \
       ' -D CMAKE_EXPORT_COMPILE_COMMANDS=ON' \
+      ' -D FREERTOS_KERNEL_PATH=/opt/FreeRTOS-Kernel/' \
       ' -G Ninja ..'
     sh 'ninja'
   end

@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.13...3.27)
 include(pico_sdk_import.cmake)
+include(FreeRTOS_Kernel_import.cmake)
 
 set(CMAKE_C_COMPILER "/opt/arm-gnu-toolchain/bin/arm-none-eabi-gcc")
 set(CMAKE_CXX_COMPILER "/opt/arm-gnu-toolchain/bin/arm-none-eabi-g++")
@@ -31,5 +32,8 @@ target_link_libraries(heinerbloch
     pico_filesystem_filesystem_fat
     pico_filesystem_blockdevice_sd
     expected
+    FreeRTOS-Kernel-Heap4
+    FreeRTOS-Config
+    FreeRTOS-POSIX
 )
 pico_add_extra_outputs(heinerbloch)
