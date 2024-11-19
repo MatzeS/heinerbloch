@@ -48,3 +48,21 @@ RUN rm /opt/install-pico-sdk.sh
 COPY install-picotool.sh /opt/install-picotool.sh
 RUN /opt/install-picotool.sh
 RUN rm /opt/install-picotool.sh
+
+# Install FreeRTOS-Kernel
+COPY install-free-rtos-kernel.sh /opt/install-free-rtos-kernel.sh
+RUN /opt/install-free-rtos-kernel.sh
+RUN rm /opt/install-free-rtos-kernel.sh
+
+# Install FreeRTOS-POSIX
+COPY install-free-rtos-posix.sh /opt/free-rtos-posix.sh
+RUN /opt/free-rtos-posix.sh
+RUN rm /opt/free-rtos-posix.sh
+
+# Apply Pico SDK/POSIX compatibility patch
+COPY pico-sdk-0001-refactor-prefix-semaphore-methods-with-pico_.patch /opt/pico-sdk/0001.patch
+COPY tinyusb-0001-refactor-prefix-semaphore-methods-with-pico_.patch /opt/pico-sdk/lib/tinyusb/0001.patch
+# git am requires committer identity (although it is not used).
+RUN git config --global user.email "root@devcontainer" && git config --global user.name "root@devcontainer"
+RUN cd /opt/pico-sdk; git am 0001.patch
+RUN cd /opt/pico-sdk/lib/tinyusb; git am 0001.patch

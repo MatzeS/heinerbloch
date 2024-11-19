@@ -1,0 +1,45 @@
+From 42613abb45581cd7d2378697748ec76d56af1f15 Mon Sep 17 00:00:00 2001
+From: Matthias Sokolowski <matthias.sokolowski@gmail.com>
+Date: Tue, 19 Nov 2024 12:01:19 +0000
+Subject: [PATCH 1/1] refactor: prefix semaphore methods with 'pico_'
+
+---
+ src/osal/osal_pico.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/src/osal/osal_pico.h b/src/osal/osal_pico.h
+index 315de0950..3a48c4fda 100644
+--- a/src/osal/osal_pico.h
++++ b/src/osal/osal_pico.h
+@@ -49,7 +49,7 @@ TU_ATTR_ALWAYS_INLINE static inline void osal_task_delay(uint32_t msec) {
+ typedef struct semaphore osal_semaphore_def_t, * osal_semaphore_t;
+ 
+ TU_ATTR_ALWAYS_INLINE static inline osal_semaphore_t osal_semaphore_create(osal_semaphore_def_t* semdef) {
+-  sem_init(semdef, 0, 255);
++  pico_sem_init(semdef, 0, 255);
+   return semdef;
+ }
+ 
+@@ -60,16 +60,16 @@ TU_ATTR_ALWAYS_INLINE static inline bool osal_semaphore_delete(osal_semaphore_t
+ 
+ TU_ATTR_ALWAYS_INLINE static inline bool osal_semaphore_post(osal_semaphore_t sem_hdl, bool in_isr) {
+   (void) in_isr;
+-  sem_release(sem_hdl);
++  pico_sem_release(sem_hdl);
+   return true;
+ }
+ 
+ TU_ATTR_ALWAYS_INLINE static inline bool osal_semaphore_wait(osal_semaphore_t sem_hdl, uint32_t msec) {
+-  return sem_acquire_timeout_ms(sem_hdl, msec);
++  return pico_sem_acquire_timeout_ms(sem_hdl, msec);
+ }
+ 
+ TU_ATTR_ALWAYS_INLINE static inline void osal_semaphore_reset(osal_semaphore_t sem_hdl) {
+-  sem_reset(sem_hdl, 0);
++  pico_sem_reset(sem_hdl, 0);
+ }
+ 
+ //--------------------------------------------------------------------+
+-- 
+2.47.0
+

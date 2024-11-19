@@ -1,0 +1,292 @@
+From 7f99e0ef84745aa37652bb39f8631646b7353979 Mon Sep 17 00:00:00 2001
+From: Matthias Sokolowski <matthias.sokolowski@gmail.com>
+Date: Tue, 19 Nov 2024 11:02:59 +0000
+Subject: [PATCH 1/1] refactor: prefix semaphore methods with 'pico_'
+
+This effectively avoids the name conflict to posix semaphors
+which produces a 'multiple definitions' problem for 'sem_init'.
+---
+ src/common/pico_sync/include/pico/sem.h       | 26 +++++++++----------
+ src/common/pico_sync/sem.c                    | 22 ++++++++--------
+ .../pico_async_context/async_context_poll.c   |  6 ++---
+ .../async_context_threadsafe_background.c     |  8 +++---
+ test/pico_sem_test/pico_sem_test.c            |  6 ++---
+ 5 files changed, 34 insertions(+), 34 deletions(-)
+ mode change 100644 => 100755 src/common/pico_sync/sem.c
+
+diff --git a/src/common/pico_sync/include/pico/sem.h b/src/common/pico_sync/include/pico/sem.h
+index 832f149..79577d6 100644
+--- a/src/common/pico_sync/include/pico/sem.h
++++ b/src/common/pico_sync/include/pico/sem.h
+@@ -14,11 +14,11 @@
+  *  \ingroup pico_sync
+  *  \brief Semaphore API for restricting access to a resource
+  *
+- * A semaphore holds a number of available permits. `sem_acquire` methods will acquire a permit if available
++ * A semaphore holds a number of available permits. `pico_sem_acquire` methods will acquire a permit if available
+  * (reducing the available count by 1) or block if the number of available permits is 0.
+- * \ref sem_release() increases the number of available permits by one potentially unblocking a `sem_acquire` method.
++ * \ref pico_sem_release() increases the number of available permits by one potentially unblocking a `pico_sem_acquire` method.
+  *
+- * Note that \ref sem_release() may be called an arbitrary number of times, however the number of available
++ * Note that \ref pico_sem_release() may be called an arbitrary number of times, however the number of available
+  * permits is capped to the max_permit value specified during semaphore initialization.
+  *
+  * Although these semaphore related functions can be used from IRQ handlers, it is obviously preferable to only
+@@ -42,7 +42,7 @@ typedef struct semaphore {
+  * \param initial_permits How many permits are initially acquired
+  * \param max_permits  Total number of permits allowed for this semaphore
+  */
+-void sem_init(semaphore_t *sem, int16_t initial_permits, int16_t max_permits);
++void pico_sem_init(semaphore_t *sem, int16_t initial_permits, int16_t max_permits);
+ 
+ /*! \brief  Return number of available permits on the semaphore
+  *  \ingroup sem
+@@ -50,18 +50,18 @@ void sem_init(semaphore_t *sem, int16_t initial_permits, int16_t max_permits);
+  * \param sem Pointer to semaphore structure
+  * \return The number of permits available on the semaphore.
+  */
+-int sem_available(semaphore_t *sem);
++int pico_sem_available(semaphore_t *sem);
+ 
+ /*! \brief  Release a permit on a semaphore
+  *  \ingroup sem
+  *
+  * Increases the number of permits by one (unless the number of permits is already at the maximum).
+- * A blocked `sem_acquire` will be released if the number of permits is increased.
++ * A blocked `pico_sem_acquire` will be released if the number of permits is increased.
+  *
+  * \param sem Pointer to semaphore structure
+  * \return true if the number of permits available was increased.
+  */
+-bool sem_release(semaphore_t *sem);
++bool pico_sem_release(semaphore_t *sem);
+ 
+ /*! \brief  Reset semaphore to a specific number of available permits
+  *  \ingroup sem
+@@ -71,7 +71,7 @@ bool sem_release(semaphore_t *sem);
+  * \param sem Pointer to semaphore structure
+  * \param permits the new number of available permits
+  */
+-void sem_reset(semaphore_t *sem, int16_t permits);
++void pico_sem_reset(semaphore_t *sem, int16_t permits);
+ 
+ /*! \brief  Acquire a permit from the semaphore
+  *  \ingroup sem
+@@ -80,7 +80,7 @@ void sem_reset(semaphore_t *sem, int16_t permits);
+  *
+  * \param sem Pointer to semaphore structure
+  */
+-void sem_acquire_blocking(semaphore_t *sem);
++void pico_sem_acquire_blocking(semaphore_t *sem);
+ 
+ /*! \brief  Acquire a permit from a semaphore, with timeout
+  *  \ingroup sem
+@@ -93,7 +93,7 @@ void sem_acquire_blocking(semaphore_t *sem);
+  * \param timeout_ms Time to wait to acquire the semaphore, in milliseconds.
+  * \return false if timeout reached, true if permit was acquired.
+  */
+-bool sem_acquire_timeout_ms(semaphore_t *sem, uint32_t timeout_ms);
++bool pico_sem_acquire_timeout_ms(semaphore_t *sem, uint32_t timeout_ms);
+ 
+ /*! \brief  Acquire a permit from a semaphore, with timeout
+  *  \ingroup sem
+@@ -106,7 +106,7 @@ bool sem_acquire_timeout_ms(semaphore_t *sem, uint32_t timeout_ms);
+  * \param timeout_us Time to wait to acquire the semaphore, in microseconds.
+  * \return false if timeout reached, true if permit was acquired.
+  */
+-bool sem_acquire_timeout_us(semaphore_t *sem, uint32_t timeout_us);
++bool pico_sem_acquire_timeout_us(semaphore_t *sem, uint32_t timeout_us);
+ 
+ /*! \brief Wait to acquire a permit from a semaphore until a specific time
+  *  \ingroup sem
+@@ -120,7 +120,7 @@ bool sem_acquire_timeout_us(semaphore_t *sem, uint32_t timeout_us);
+  * \return true if permit was acquired, false if the until time was reached before
+  * acquiring.
+  */
+-bool sem_acquire_block_until(semaphore_t *sem, absolute_time_t until);
++bool pico_sem_acquire_block_until(semaphore_t *sem, absolute_time_t until);
+ 
+ /*! \brief Attempt to acquire a permit from a semaphore without blocking
+  *  \ingroup sem
+@@ -131,7 +131,7 @@ bool sem_acquire_block_until(semaphore_t *sem, absolute_time_t until);
+  * \param sem Pointer to semaphore structure
+  * \return true if permit was acquired.
+  */
+-bool sem_try_acquire(semaphore_t *sem);
++bool pico_sem_try_acquire(semaphore_t *sem);
+ 
+ #ifdef __cplusplus
+ }
+diff --git a/src/common/pico_sync/sem.c b/src/common/pico_sync/sem.c
+old mode 100644
+new mode 100755
+index 9044817..9a77df3
+--- a/src/common/pico_sync/sem.c
++++ b/src/common/pico_sync/sem.c
+@@ -7,14 +7,14 @@
+ #include "pico/sem.h"
+ #include "pico/time.h"
+ 
+-void sem_init(semaphore_t *sem, int16_t initial_permits, int16_t max_permits) {
++void pico_sem_init(semaphore_t *sem, int16_t initial_permits, int16_t max_permits) {
+     lock_init(&sem->core, next_striped_spin_lock_num());
+     sem->permits = initial_permits;
+     sem->max_permits = max_permits;
+     __mem_fence_release();
+ }
+ 
+-int __time_critical_func(sem_available)(semaphore_t *sem) {
++int __time_critical_func(pico_sem_available)(semaphore_t *sem) {
+ #ifdef __GNUC__
+     return *(volatile typeof(sem->permits) *) &sem->permits;
+ #else
+@@ -23,7 +23,7 @@ int __time_critical_func(sem_available)(semaphore_t *sem) {
+ #endif
+ }
+ 
+-void __time_critical_func(sem_acquire_blocking)(semaphore_t *sem) {
++void __time_critical_func(pico_sem_acquire_blocking)(semaphore_t *sem) {
+     do {
+         uint32_t save = spin_lock_blocking(sem->core.spin_lock);
+         if (sem->permits > 0) {
+@@ -35,15 +35,15 @@ void __time_critical_func(sem_acquire_blocking)(semaphore_t *sem) {
+     } while (true);
+ }
+ 
+-bool __time_critical_func(sem_acquire_timeout_ms)(semaphore_t *sem, uint32_t timeout_ms) {
+-    return sem_acquire_block_until(sem, make_timeout_time_ms(timeout_ms));
++bool __time_critical_func(pico_sem_acquire_timeout_ms)(semaphore_t *sem, uint32_t timeout_ms) {
++    return pico_sem_acquire_block_until(sem, make_timeout_time_ms(timeout_ms));
+ }
+ 
+-bool __time_critical_func(sem_acquire_timeout_us)(semaphore_t *sem, uint32_t timeout_us) {
+-    return sem_acquire_block_until(sem, make_timeout_time_us(timeout_us));
++bool __time_critical_func(pico_sem_acquire_timeout_us)(semaphore_t *sem, uint32_t timeout_us) {
++    return pico_sem_acquire_block_until(sem, make_timeout_time_us(timeout_us));
+ }
+ 
+-bool __time_critical_func(sem_acquire_block_until)(semaphore_t *sem, absolute_time_t until) {
++bool __time_critical_func(pico_sem_acquire_block_until)(semaphore_t *sem, absolute_time_t until) {
+     do {
+         uint32_t save = spin_lock_blocking(sem->core.spin_lock);
+         if (sem->permits > 0) {
+@@ -57,7 +57,7 @@ bool __time_critical_func(sem_acquire_block_until)(semaphore_t *sem, absolute_ti
+     } while (true);
+ }
+ 
+-bool __time_critical_func(sem_try_acquire)(semaphore_t *sem) {
++bool __time_critical_func(pico_sem_try_acquire)(semaphore_t *sem) {
+     uint32_t save = spin_lock_blocking(sem->core.spin_lock);
+     if (sem->permits > 0) {
+         sem->permits--;
+@@ -69,7 +69,7 @@ bool __time_critical_func(sem_try_acquire)(semaphore_t *sem) {
+ }
+ 
+ // todo this should really have a blocking variant for when permits are maxed out
+-bool __time_critical_func(sem_release)(semaphore_t *sem) {
++bool __time_critical_func(pico_sem_release)(semaphore_t *sem) {
+     uint32_t save = spin_lock_blocking(sem->core.spin_lock);
+     int32_t count = sem->permits;
+     if (count < sem->max_permits) {
+@@ -82,7 +82,7 @@ bool __time_critical_func(sem_release)(semaphore_t *sem) {
+     }
+ }
+ 
+-void __time_critical_func(sem_reset)(semaphore_t *sem, int16_t permits) {
++void __time_critical_func(pico_sem_reset)(semaphore_t *sem, int16_t permits) {
+     assert(permits >= 0 && permits <= sem->max_permits);
+     uint32_t save = spin_lock_blocking(sem->core.spin_lock);
+     if (permits > sem->permits) {
+diff --git a/src/rp2_common/pico_async_context/async_context_poll.c b/src/rp2_common/pico_async_context/async_context_poll.c
+index 47991b4..13eba27 100644
+--- a/src/rp2_common/pico_async_context/async_context_poll.c
++++ b/src/rp2_common/pico_async_context/async_context_poll.c
+@@ -18,12 +18,12 @@ bool async_context_poll_init_with_defaults(async_context_poll_t *self) {
+     self->core.core_num = get_core_num();
+     self->core.type = &template;
+     self->core.flags = ASYNC_CONTEXT_FLAG_POLLED | ASYNC_CONTEXT_FLAG_CALLBACK_FROM_NON_IRQ;
+-    sem_init(&self->sem, 1, 1);
++    pico_sem_init(&self->sem, 1, 1);
+     return true;
+ }
+ 
+ static void async_context_poll_wake_up(async_context_t *self_base) {
+-    sem_release(&((async_context_poll_t *)self_base)->sem);
++    pico_sem_release(&((async_context_poll_t *)self_base)->sem);
+ }
+ 
+ static void async_context_poll_requires_update(async_context_t *self_base, async_when_pending_worker_t *worker) {
+@@ -42,7 +42,7 @@ static void async_context_poll_wait_until(__unused async_context_t *self_base, a
+ static void async_context_poll_wait_for_work_until(async_context_t *self_base, absolute_time_t until) {
+     absolute_time_t next_time = self_base->next_time;
+     async_context_poll_t *self = (async_context_poll_t *)self_base;
+-    sem_acquire_block_until(&self->sem, absolute_time_min(next_time, until));
++    pico_sem_acquire_block_until(&self->sem, absolute_time_min(next_time, until));
+ }
+ 
+ static void async_context_poll_lock_check(async_context_t *self_base) {
+diff --git a/src/rp2_common/pico_async_context/async_context_threadsafe_background.c b/src/rp2_common/pico_async_context/async_context_threadsafe_background.c
+index 33f3d45..6a213bb 100644
+--- a/src/rp2_common/pico_async_context/async_context_threadsafe_background.c
++++ b/src/rp2_common/pico_async_context/async_context_threadsafe_background.c
+@@ -67,7 +67,7 @@ static void async_context_threadsafe_background_wake_up(async_context_t *self_ba
+     // on same core, can dispatch directly
+     irq_set_pending(self->low_priority_irq_num);
+ #endif
+-    sem_release(&self->work_needed_sem);
++    pico_sem_release(&self->work_needed_sem);
+ }
+ 
+ // Prevent background processing in pensv and access by the other core
+@@ -98,7 +98,7 @@ typedef struct sync_func_call{
+ static void handle_sync_func_call(async_context_t *context, async_when_pending_worker_t *worker) {
+     sync_func_call_t *call = (sync_func_call_t *)worker;
+     call->rc = call->func(call->param);
+-    sem_release(&call->sem);
++    pico_sem_release(&call->sem);
+     async_context_remove_when_pending_worker(context, worker);
+ }
+ #endif
+@@ -144,7 +144,7 @@ uint32_t async_context_threadsafe_background_execute_sync(async_context_t *self_
+         call.worker.do_work = handle_sync_func_call;
+         call.func = func;
+         call.param = param;
+-        sem_init(&call.sem, 0, 1);
++        pico_sem_init(&call.sem, 0, 1);
+         async_context_add_when_pending_worker(self_base, &call.worker);
+         async_context_set_work_pending(self_base, &call.worker);
+         sem_acquire_blocking(&call.sem);
+@@ -214,7 +214,7 @@ bool async_context_threadsafe_background_init(async_context_threadsafe_backgroun
+ #endif
+     }
+     assert(self->core.core_num == alarm_pool_core_num(self->alarm_pool));
+-    sem_init(&self->work_needed_sem, 1, 1);
++    pico_sem_init(&self->work_needed_sem, 1, 1);
+     recursive_mutex_init(&self->lock_mutex);
+     bool ok = low_prio_irq_init(self, config->low_priority_irq_handler_priority);
+     return ok;
+diff --git a/test/pico_sem_test/pico_sem_test.c b/test/pico_sem_test/pico_sem_test.c
+index 8647c19..159dd73 100644
+--- a/test/pico_sem_test/pico_sem_test.c
++++ b/test/pico_sem_test/pico_sem_test.c
+@@ -16,13 +16,13 @@ int main() {
+     semaphore_t sem;
+ 
+     stdio_init_all();
+-    sem_init(&sem, 1, 1);
++    pico_sem_init(&sem, 1, 1);
+ 
+     PICOTEST_START();
+ 
+     PICOTEST_START_SECTION("sem_try_acquire");
+-        PICOTEST_CHECK(sem_try_acquire(&sem), "available permit not acquired");
+-        PICOTEST_CHECK(!sem_try_acquire(&sem), "success with no permits");
++        PICOTEST_CHECK(pico_sem_try_acquire(&sem), "available permit not acquired");
++        PICOTEST_CHECK(!pico_sem_try_acquire(&sem), "success with no permits");
+     PICOTEST_END_SECTION();
+ 
+     PICOTEST_END_TEST();
+-- 
+2.47.0
+
