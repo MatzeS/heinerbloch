@@ -5,6 +5,11 @@ include(FreeRTOS_Kernel_import.cmake)
 set(CMAKE_C_COMPILER "/opt/arm-gnu-toolchain/bin/arm-none-eabi-gcc")
 set(CMAKE_CXX_COMPILER "/opt/arm-gnu-toolchain/bin/arm-none-eabi-g++")
 
+set(CMAKE_CXX_FLAGS_DEBUG "-g")
+set(CMAKE_CXX_FLAGS_RELEASE "-O0")
+set(CMAKE_C_FLAGS_RELEASE "-O0")
+set(CMAKE_C_FLAGS_RELEASE "-g")
+
 project(heinerbloch)
 pico_sdk_init()
 set(CMAKE_CXX_STANDARD 20)
@@ -35,5 +40,10 @@ target_link_libraries(heinerbloch
     FreeRTOS-Kernel-Heap4
     FreeRTOS-Config
     FreeRTOS-POSIX
+    # FreeRTOS-gthr-posix
+    local-newlib
 )
 pico_add_extra_outputs(heinerbloch)
+
+
+
