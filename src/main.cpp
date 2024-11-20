@@ -16,20 +16,6 @@ specific language governing permissions and limitations under the License.
 
 #include <pico/filesystem.h>
 #include <pico/stdio.h>
-#include <format>
-#include <iostream>
-
-struct Foo {};
-
-template <>
-struct std::formatter<Foo> : std::formatter<string_view> {
-  auto format(const Foo&, std::format_context& ctx) const {
-    std::string temp;
-    std::format_to(std::back_inserter(temp), "nothing but Foo");
-    return std::formatter<string_view>::format(temp, ctx);
-  }
-};
-
 #include <fstream>
 #include <iostream>
 
@@ -38,17 +24,5 @@ extern "C" bool fs_init(void);
 int main() {
   stdio_init_all();
 
-  auto f = Foo{};
-  std::string message = std::format("The answer is {} and {}.", 42, f);
-  printf("%s", message.c_str());
-
-  auto result = fs_init();
-  printf("\n\nfs init: %s\n", result ? "true" : "false");
-
-  std::ofstream myfile;
-  myfile.open("/somefile.txt");
-  myfile << "some file content.\n";
-  myfile.close();
-
-  printf("done");
+  printf("EXITING MAIN");
 }
