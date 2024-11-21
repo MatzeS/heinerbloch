@@ -22,6 +22,7 @@ target_include_directories(FreeRTOS-POSIX
     ${FREE_RTOS_POSIX_ROOT_DIRECTORY}/FreeRTOS-Plus-POSIX/include/portable
     ${FREE_RTOS_POSIX_ROOT_DIRECTORY}/include
     ${FREE_RTOS_POSIX_ROOT_DIRECTORY}/include/private
+    ${FREE_RTOS_POSIX_ROOT_DIRECTORY}/include/FreeRTOS_POSIX
 )
 target_link_libraries(FreeRTOS-POSIX
     INTERFACE
@@ -30,3 +31,10 @@ target_link_libraries(FreeRTOS-POSIX
 
 add_library(FreeRTOS-POSIX-Port INTERFACE)
 target_include_directories(FreeRTOS-POSIX-Port INTERFACE ${CMAKE_CURRENT_LIST_DIR}/port)
+
+# target_compile_definitions(local-newlib INTERFACE 
+#     -D_GLIBCXX_HAS_GTHREADS=1 
+#     -D_POSIX_THREADS=1 
+#     -D_POSIX_TIMEOUTS=1
+#     -D_UNIX98_THREAD_MUTEX_ATTRIBUTES=1
+# )

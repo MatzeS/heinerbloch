@@ -1,0 +1,247 @@
+From 181ac34d40ede29a0116eaaf173d751c67841688 Mon Sep 17 00:00:00 2001
+From: "root@devcontainer" <root@devcontainer>
+Date: Thu, 21 Nov 2024 00:43:14 +0000
+Subject: [PATCH 1/1] wip
+
+---
+ .../source/FreeRTOS_POSIX_clock.c             |  2 +-
+ .../source/FreeRTOS_POSIX_mqueue.c            |  2 +-
+ .../source/FreeRTOS_POSIX_pthread.c           |  2 +-
+ .../source/FreeRTOS_POSIX_pthread_barrier.c   |  2 +-
+ .../source/FreeRTOS_POSIX_pthread_cond.c      |  2 +-
+ .../source/FreeRTOS_POSIX_pthread_mutex.c     |  2 +-
+ .../source/FreeRTOS_POSIX_semaphore.c         |  2 +-
+ .../source/FreeRTOS_POSIX_timer.c             |  2 +-
+ .../source/FreeRTOS_POSIX_utils.c             |  2 +-
+ .../{errno.h => errno_removed.h}              |  0
+ include/FreeRTOS_POSIX/pthread.h              | 21 ++++++++++++
+ include/FreeRTOS_POSIX/sys/types.h            | 15 +++++++++
+ include/FreeRTOS_POSIX/time.h                 | 32 +++++++++++++++++++
+ 13 files changed, 77 insertions(+), 9 deletions(-)
+ rename include/FreeRTOS_POSIX/{errno.h => errno_removed.h} (100%)
+
+diff --git a/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_clock.c b/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_clock.c
+index 51e592a..1d52ad6 100755
+--- a/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_clock.c
++++ b/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_clock.c
+@@ -34,7 +34,7 @@
+ 
+ /* FreeRTOS+POSIX includes. */
+ #include "FreeRTOS_POSIX.h"
+-#include "FreeRTOS_POSIX/errno.h"
++#include <errno.h>
+ #include "FreeRTOS_POSIX/time.h"
+ #include "FreeRTOS_POSIX/utils.h"
+ 
+diff --git a/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_mqueue.c b/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_mqueue.c
+index 9f9079b..fc5d96e 100755
+--- a/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_mqueue.c
++++ b/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_mqueue.c
+@@ -33,7 +33,7 @@
+ 
+ /* FreeRTOS+POSIX includes. */
+ #include "FreeRTOS_POSIX.h"
+-#include "FreeRTOS_POSIX/errno.h"
++#include <errno.h>
+ #include "FreeRTOS_POSIX/fcntl.h"
+ #include "FreeRTOS_POSIX/mqueue.h"
+ #include "FreeRTOS_POSIX/utils.h"
+diff --git a/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_pthread.c b/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_pthread.c
+index f063160..72db402 100755
+--- a/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_pthread.c
++++ b/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_pthread.c
+@@ -34,7 +34,7 @@
+ 
+ /* FreeRTOS+POSIX includes. */
+ #include "FreeRTOS_POSIX.h"
+-#include "FreeRTOS_POSIX/errno.h"
++#include <errno.h>
+ #include "FreeRTOS_POSIX/pthread.h"
+ 
+ /**
+diff --git a/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_pthread_barrier.c b/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_pthread_barrier.c
+index 2b621cb..1c98f8a 100755
+--- a/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_pthread_barrier.c
++++ b/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_pthread_barrier.c
+@@ -33,7 +33,7 @@
+ 
+ /* FreeRTOS+POSIX includes. */
+ #include "FreeRTOS_POSIX.h"
+-#include "FreeRTOS_POSIX/errno.h"
++#include <errno.h>
+ #include "FreeRTOS_POSIX/pthread.h"
+ 
+ #include "atomic.h"
+diff --git a/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_pthread_cond.c b/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_pthread_cond.c
+index 7fa9e0e..e531458 100755
+--- a/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_pthread_cond.c
++++ b/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_pthread_cond.c
+@@ -33,7 +33,7 @@
+ 
+ /* FreeRTOS+POSIX includes. */
+ #include "FreeRTOS_POSIX.h"
+-#include "FreeRTOS_POSIX/errno.h"
++#include <errno.h>
+ #include "FreeRTOS_POSIX/pthread.h"
+ #include "FreeRTOS_POSIX/utils.h"
+ 
+diff --git a/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_pthread_mutex.c b/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_pthread_mutex.c
+index 5c837b3..d435811 100755
+--- a/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_pthread_mutex.c
++++ b/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_pthread_mutex.c
+@@ -34,7 +34,7 @@
+ 
+ /* FreeRTOS+POSIX includes. */
+ #include "FreeRTOS_POSIX.h"
+-#include "FreeRTOS_POSIX/errno.h"
++#include <errno.h>
+ #include "FreeRTOS_POSIX/pthread.h"
+ #include "FreeRTOS_POSIX/utils.h"
+ 
+diff --git a/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_semaphore.c b/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_semaphore.c
+index 6a83150..51bc1c2 100755
+--- a/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_semaphore.c
++++ b/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_semaphore.c
+@@ -33,7 +33,7 @@
+ 
+ /* FreeRTOS+POSIX includes. */
+ #include "FreeRTOS_POSIX.h"
+-#include "FreeRTOS_POSIX/errno.h"
++#include <errno.h>
+ #include "FreeRTOS_POSIX/semaphore.h"
+ #include "FreeRTOS_POSIX/utils.h"
+ 
+diff --git a/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_timer.c b/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_timer.c
+index 33485ae..920698c 100755
+--- a/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_timer.c
++++ b/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_timer.c
+@@ -33,7 +33,7 @@
+ 
+ /* FreeRTOS+POSIX includes. */
+ #include "FreeRTOS_POSIX.h"
+-#include "FreeRTOS_POSIX/errno.h"
++#include <errno.h>
+ #include "FreeRTOS_POSIX/pthread.h"
+ #include "FreeRTOS_POSIX/signal.h"
+ #include "FreeRTOS_POSIX/time.h"
+diff --git a/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_utils.c b/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_utils.c
+index c121587..461bee3 100755
+--- a/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_utils.c
++++ b/FreeRTOS-Plus-POSIX/source/FreeRTOS_POSIX_utils.c
+@@ -34,7 +34,7 @@
+ 
+ /* FreeRTOS+POSIX includes. */
+ #include "FreeRTOS_POSIX.h"
+-#include "FreeRTOS_POSIX/errno.h"
++#include <errno.h>
+ #include "FreeRTOS_POSIX/utils.h"
+ 
+ /*-----------------------------------------------------------*/
+diff --git a/include/FreeRTOS_POSIX/errno.h b/include/FreeRTOS_POSIX/errno_removed.h
+similarity index 100%
+rename from include/FreeRTOS_POSIX/errno.h
+rename to include/FreeRTOS_POSIX/errno_removed.h
+diff --git a/include/FreeRTOS_POSIX/pthread.h b/include/FreeRTOS_POSIX/pthread.h
+index 5923326..fb91245 100755
+--- a/include/FreeRTOS_POSIX/pthread.h
++++ b/include/FreeRTOS_POSIX/pthread.h
+@@ -513,6 +513,27 @@ int pthread_setschedparam( pthread_t thread,
+                            int policy,
+                            const struct sched_param * param );
+ 
++
++typedef uint32_t pthread_key_t;
++typedef uint32_t pthread_once_t;
++int pthread_cancel(pthread_t);
++int	pthread_once (pthread_once_t *__once_control, void (*__init_routine)(void));
++
++
++int	pthread_key_create (pthread_key_t *__key,
++			    void (*__destructor)(void *));
++int	pthread_key_delete (pthread_key_t __key);
++
++int	pthread_setspecific (pthread_key_t __key, const void *__value);
++void *	pthread_getspecific (pthread_key_t __key);
++
++#define PTHREAD_ONCE_INIT 0
++#define _GTHREAD_USE_MUTEX_INIT_FUNC
++#define _GTHREAD_USE_COND_INIT_FUNC
++
++#include <errno.h>
++
++
+ #ifdef __cplusplus
+ }
+ #endif
+diff --git a/include/FreeRTOS_POSIX/sys/types.h b/include/FreeRTOS_POSIX/sys/types.h
+index 4a5e922..d53468c 100755
+--- a/include/FreeRTOS_POSIX/sys/types.h
++++ b/include/FreeRTOS_POSIX/sys/types.h
+@@ -192,6 +192,21 @@ typedef void                         * pthread_barrierattr_t;
+     typedef long int                 off_t;
+ #endif
+ 
++
++
++typedef	unsigned int	u_int;
++typedef	__int64_t	sbintime_t;
++typedef long suseconds_t;
++struct timeval {
++	time_t		tv_sec;		/* seconds */
++	suseconds_t	tv_usec;	/* and microseconds */
++};
++
++struct timezone {
++	int	tz_minuteswest;	/* minutes west of Greenwich */
++	int	tz_dsttime;	/* type of dst correction */
++};
++
+ #ifdef __cplusplus
+ }
+ #endif
+diff --git a/include/FreeRTOS_POSIX/time.h b/include/FreeRTOS_POSIX/time.h
+index d28336d..8b2f28f 100755
+--- a/include/FreeRTOS_POSIX/time.h
++++ b/include/FreeRTOS_POSIX/time.h
+@@ -259,6 +259,38 @@ int timer_settime( timer_t timerid,
+                    const struct itimerspec * value,
+                    struct itimerspec * ovalue );
+ 
++struct tm
++{
++  int	tm_sec;
++  int	tm_min;
++  int	tm_hour;
++  int	tm_mday;
++  int	tm_mon;
++  int	tm_year;
++  int	tm_wday;
++  int	tm_yday;
++  int	tm_isdst;
++#ifdef __TM_GMTOFF
++  long	__TM_GMTOFF;
++#endif
++#ifdef __TM_ZONE
++  const char *__TM_ZONE;
++#endif
++};
++
++
++double	   difftime (time_t _time2, time_t _time1);
++time_t	   mktime (struct tm *_timeptr);
++time_t	   time (time_t *_timer);
++char	  *asctime (const struct tm *_tblock);
++char	  *ctime (const time_t *_time);
++struct tm *gmtime (const time_t *_timer);
++struct tm *localtime (const time_t *_timer);
++size_t	   strftime (char *__restrict _s,
++			     size_t _maxsize, const char *__restrict _fmt,
++			     const struct tm *__restrict _t);
++
++
+ #ifdef __cplusplus
+ }
+ #endif
+-- 
+2.47.0
+

@@ -23,17 +23,25 @@ add_executable(heinerbloch
 target_include_directories(heinerbloch
     PRIVATE
     src
+    libs/FreeRTOS/gthr
 )
 pico_enable_filesystem(heinerbloch FS_INIT src/fs_init.cpp)
 target_link_libraries(heinerbloch
     PRIVATE
     pico_stdlib
-    pico_filesystem
-    pico_filesystem_filesystem_fat
-    pico_filesystem_blockdevice_sd
+    # pico_filesystem
+    # pico_filesystem_filesystem_fat
+    # pico_filesystem_blockdevice_sd
     expected
     FreeRTOS-Kernel-Heap4
     FreeRTOS-Config
     FreeRTOS-POSIX
 )
 pico_add_extra_outputs(heinerbloch)
+
+target_compile_definitions(heinerbloch PUBLIC 
+    -D_GLIBCXX_HAS_GTHREADS=1 
+    -D_POSIX_THREADS=1 
+    -D_POSIX_TIMEOUTS=1
+    -D_UNIX98_THREAD_MUTEX_ATTRIBUTES=1
+)

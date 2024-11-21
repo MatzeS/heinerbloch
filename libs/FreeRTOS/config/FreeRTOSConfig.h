@@ -154,6 +154,10 @@ to exclude the API function. */
 #define configMAX_SYSCALL_INTERRUPT_PRIORITY    16
 #endif
 
+
+#define configTICK_RATE_HZ  1
+#define CLOCKS_PER_SEC  1
+
 /* A header file that defines trace macro can be included here. */
 
 #endif /* FREERTOS_CONFIG_H */
