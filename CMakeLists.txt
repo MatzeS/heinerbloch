@@ -25,6 +25,12 @@ target_include_directories(heinerbloch
     PRIVATE
     src
 )
+
+generate_data_models(
+    TARGET_NAME DataModels
+    SOURCES ${CMAKE_CURRENT_LIST_DIR}/data-models/foo.schema.json
+)
+
 pico_enable_filesystem(heinerbloch FS_INIT src/fs_init.cpp)
 target_link_libraries(heinerbloch
     PRIVATE
@@ -36,5 +42,7 @@ target_link_libraries(heinerbloch
     FreeRTOS-Kernel-Heap4
     FreeRTOS-Config
     FreeRTOS-POSIX
+    nlohmann_json::nlohmann_json
+    DataModels
 )
 pico_add_extra_outputs(heinerbloch)

@@ -1,0 +1,24 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+        "bar": {
+            "type": "number"
+        },
+        "baz": {
+            "type": "string"
+        },
+        "sub_foo": {
+            "type": "object",
+            "properties": {
+                "inner_value": {
+                    "enum": [
+                        "a",
+                        "b",
+                        "c"
+                    ]
+                }
+            }
+        }
+    }
+}

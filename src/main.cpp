@@ -16,13 +16,27 @@ specific language governing permissions and limitations under the License.
 
 #include <pico/filesystem.h>
 #include <pico/stdio.h>
+#include <data-models/foo.hpp>
 #include <fstream>
 #include <iostream>
+#include <nlohmann/json.hpp>
 
 extern "C" bool fs_init(void);
 
 int main() {
   stdio_init_all();
+
+  using nlohmann::json;
+
+  heinerbloch::Foo foo;
+  foo.bar = 3.14;
+  foo.baz = "asdf";
+  foo.subFoo.emplace();
+  foo.subFoo->innerValue = heinerbloch::InnerValue::A;
+
+  json j;
+  heinerbloch::to_json(j, foo);
+  std::cout << j.dump() << '\n';
 
   printf("EXITING MAIN");
 }
