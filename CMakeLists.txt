@@ -6,6 +6,7 @@ set(CMAKE_C_COMPILER "/opt/arm-gnu-toolchain/bin/arm-none-eabi-gcc")
 set(CMAKE_CXX_COMPILER "/opt/arm-gnu-toolchain/bin/arm-none-eabi-g++")
 
 project(heinerbloch)
+set(PICO_CXX_ENABLE_EXCEPTIONS 1)
 pico_sdk_init()
 set(CMAKE_CXX_STANDARD 20)
 
