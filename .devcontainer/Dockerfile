@@ -55,9 +55,9 @@ RUN /opt/install-free-rtos-kernel.sh
 RUN rm /opt/install-free-rtos-kernel.sh
 
 # Install FreeRTOS-POSIX
-COPY install-free-rtos-posix.sh /opt/free-rtos-posix.sh
-RUN /opt/free-rtos-posix.sh
-RUN rm /opt/free-rtos-posix.sh
+COPY install-free-rtos-posix.sh /opt/install-free-rtos-posix.sh
+RUN /opt/install-free-rtos-posix.sh
+RUN rm /opt/install-free-rtos-posix.sh
 
 # Apply Pico SDK/POSIX compatibility patch
 COPY pico-sdk-0001-refactor-prefix-semaphore-methods-with-pico_.patch /opt/pico-sdk/0001.patch
@@ -66,3 +66,8 @@ COPY tinyusb-0001-refactor-prefix-semaphore-methods-with-pico_.patch /opt/pico-s
 RUN git config --global user.email "root@devcontainer" && git config --global user.name "root@devcontainer"
 RUN cd /opt/pico-sdk; git am 0001.patch
 RUN cd /opt/pico-sdk/lib/tinyusb; git am 0001.patch
+
+# Install quicktype
+COPY install-quicktype.sh /opt/install-quicktype.sh
+RUN /opt/install-quicktype.sh
+RUN rm /opt/install-quicktype.sh
