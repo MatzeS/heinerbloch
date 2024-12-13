@@ -17,6 +17,16 @@ target_link_libraries(
     DataModels
     fmt::fmt
 )
+target_compile_options(heinerbloch PRIVATE $<$<COMPILE_LANGUAGE:CXX>:
+    -pedantic
+    -pedantic-errors
+    -Wno-psabi
+    -Wall
+    -Wextra
+    -Wconversion
+    -Wsign-conversion
+    -Werror
+>)
 
 generate_data_models(
     TARGET_NAME DataModels
