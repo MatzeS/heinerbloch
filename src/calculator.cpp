@@ -1,8 +1,8 @@
-#include <data-models/foo.hpp>
-#include <nlohmann/json.hpp>
 #include <fmt/format.h>
 #include <fmt/ranges.h>
+#include <data-models/foo.hpp>
 #include <iostream>
+#include <nlohmann/json.hpp>
 
 #include "heinerbloch/calculator.hpp"
 
