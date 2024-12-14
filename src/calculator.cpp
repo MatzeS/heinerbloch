@@ -1,9 +1,13 @@
 #include <data-models/foo.hpp>
 #include <nlohmann/json.hpp>
+#include <fmt/format.h>
+#include <fmt/ranges.h>
+#include <iostream>
 
 #include "heinerbloch/calculator.hpp"
 
 uint32_t add(std::span<uint32_t> numbers) {
+  std::cout << fmt::format("well {}\n", fmt::join(numbers, ", "));
   uint32_t sum = 0;
   for (auto const e : numbers) {
     sum += e;

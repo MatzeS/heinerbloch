@@ -4,3 +4,6 @@
 [submodule "libs/json"]
 	path = libs/nlohmann_json
 	url = https://github.com/nlohmann/json
+[submodule "libs/fmt"]
+	path = libs/fmt
+	url = https://github.com/fmtlib/fmt

@@ -15,6 +15,7 @@ target_link_libraries(
     expected
     nlohmann_json::nlohmann_json
     DataModels
+    fmt::fmt
 )
 
 generate_data_models(
