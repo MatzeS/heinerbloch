@@ -22,9 +22,10 @@ namespace 'dev' do
   end
 end
 
+linux_build_directory = 'platform/linux/build'
 desc 'build for host'
 task 'build:linux' do
-  build_directory = 'platform/linux/build'
+  build_directory = linux_build_directory
   Dir.mkdir(build_directory) unless File.directory?(build_directory)
 
   Dir.chdir(build_directory) do
@@ -52,16 +53,10 @@ task 'build:rp2350' do
   end
 end
 
-task 'build-pico' do
-  build_directory = 'build-pico'
-  Dir.mkdir(build_directory) unless File.directory?(build_directory)
-
-  Dir.chdir(build_directory) do
-    sh 'cmake' \
-      ' --toolchain ../arm.cmake' \
-      ' -D CMAKE_EXPORT_COMPILE_COMMANDS=ON' \
-      ' -G Ninja ..'
-    sh 'ninja'
+desc 'run unit tests'
+task 'test:unit' do
+  Dir.chdir("#{linux_build_directory}/build-tests") do
+    sh 'ctest'
   end
 end
 

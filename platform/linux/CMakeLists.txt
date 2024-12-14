@@ -13,3 +13,4 @@ target_link_libraries(
 )
 
 add_subdirectory(../../ build-heinerbloch)
+add_subdirectory(../../test build-tests)

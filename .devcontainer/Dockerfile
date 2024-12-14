@@ -71,3 +71,7 @@ RUN cd /opt/pico-sdk/lib/tinyusb; git am 0001.patch
 COPY install-quicktype.sh /opt/install-quicktype.sh
 RUN /opt/install-quicktype.sh
 RUN rm /opt/install-quicktype.sh
+
+# Install gtest
+RUN apt-get -y install \
+    libgtest-dev
