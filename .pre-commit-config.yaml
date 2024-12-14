@@ -28,6 +28,16 @@ repos:
       - id: clang-format
         args:
             - "-i"
+
       - id: clang-tidy
+        name: clang-tidy linux
+        exclude: ^platform/rp2350/
         args:
-            - "-p=build"
+            - "-p=platform/linux/build"
+
+
+      - id: clang-tidy
+        name: clang-tidy rp2350
+        files: ^platform/rp2350/
+        args:
+            - "-p=platform/rp2350/build"

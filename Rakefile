@@ -22,19 +22,44 @@ namespace 'dev' do
   end
 end
 
-build_directory = 'build'
-
-desc 'build the firmware'
-task 'build' do
+desc 'build for host'
+task 'build:linux' do
+  build_directory = 'platform/linux/build'
   Dir.mkdir(build_directory) unless File.directory?(build_directory)
 
   Dir.chdir(build_directory) do
     sh 'cmake' \
-      ' -D PICO_SDK_PATH=/opt/pico-sdk/' \
-      ' -D PICO_PLATFORM=rp2350' \
-      ' -D PICO_BOARD=solderparty_rp2350_stamp_xl' \
       ' -D CMAKE_EXPORT_COMPILE_COMMANDS=ON' \
+      ' -G Ninja ..'
+    sh 'ninja'
+  end
+end
+
+rp2350_build_directory = 'platform/rp2350/build'
+
+desc 'build for rp2350'
+task 'build:rp2350' do
+  build_directory = rp2350_build_directory
+  Dir.mkdir(build_directory) unless File.directory?(build_directory)
+
+  Dir.chdir(build_directory) do
+    sh 'cmake' \
+      ' -D CMAKE_EXPORT_COMPILE_COMMANDS=ON' \
+      ' -D PICO_SDK_PATH=/opt/pico-sdk/' \
       ' -D FREERTOS_KERNEL_PATH=/opt/FreeRTOS-Kernel/' \
+      ' -G Ninja ..'
+    sh 'ninja'
+  end
+end
+
+task 'build-pico' do
+  build_directory = 'build-pico'
+  Dir.mkdir(build_directory) unless File.directory?(build_directory)
+
+  Dir.chdir(build_directory) do
+    sh 'cmake' \
+      ' --toolchain ../arm.cmake' \
+      ' -D CMAKE_EXPORT_COMPILE_COMMANDS=ON' \
       ' -G Ninja ..'
     sh 'ninja'
   end
@@ -46,7 +71,7 @@ task 'flash' do
     ' -f interface/cmsis-dap.cfg' \
     ' -f target/rp2350.cfg' \
     ' -c "adapter speed 5000"' \
-    " -c \"program #{build_directory}/heinerbloch.elf verify reset exit\""
+    " -c \"program #{rp2350_build_directory}/heinerbloch-rp2350.elf verify reset exit\""
 end
 
 namespace 'setup' do
