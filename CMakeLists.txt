@@ -3,6 +3,7 @@ add_subdirectory(libs)
 add_library(
     heinerbloch
     ${CMAKE_CURRENT_LIST_DIR}/src/calculator.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/src/Sht35.cpp
 )
 target_include_directories(
     heinerbloch
@@ -11,8 +12,9 @@ target_include_directories(
 )
 target_link_libraries(
     heinerbloch
-    PRIVATE
+    PUBLIC
     expected
+    PRIVATE
     nlohmann_json::nlohmann_json
     DataModels
     fmt::fmt

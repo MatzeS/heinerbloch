@@ -27,4 +27,5 @@ void experiment() {
   json j;
   heinerbloch::to_json(j, foo);
   printf("%s\n", j.dump().c_str());
+  // printf("\033[1;31mbold red text\033[0m\n");
 }
