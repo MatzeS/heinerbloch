@@ -20,6 +20,7 @@ set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTOR
 add_executable(
     heinerbloch-rp2350
     src/main.cpp
+    src/I2C.cpp
 )
 pico_enable_filesystem(heinerbloch-rp2350 FS_INIT src/fs_init.cpp)
 target_link_libraries(heinerbloch-rp2350
@@ -29,6 +30,7 @@ target_link_libraries(heinerbloch-rp2350
     pico_filesystem
     pico_filesystem_filesystem_fat
     pico_filesystem_blockdevice_sd
+    hardware_i2c
     expected
     FreeRTOS-Kernel-Heap4
     FreeRTOS-Config
