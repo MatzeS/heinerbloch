@@ -3,4 +3,5 @@ WarningsAsErrors: '*'
 Checks: '
   clang-diagnostic-*,
   clang-analyzer-*,
+  google-explicit-constructor,
   '
