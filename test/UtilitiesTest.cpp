@@ -30,7 +30,7 @@ TEST(Utilities, ByteModification_value_and_mask_apply_correctly) {
 TEST(Utilities, ByteModification_construction_from_bit_section) {
   auto const data = std::byte{0b10101010};
 
-  auto const modification = ByteModification{2, 6, std::byte{0b0101}};
+  auto const modification = ByteModification{2, 4, std::byte{0b0101}};
 
   auto const result = modification.apply(data);
 

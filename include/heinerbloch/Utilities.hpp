@@ -27,6 +27,7 @@ class ByteModification {
   std::byte value;
 
  public:
+  //  TODO move to cpp
   ByteModification(std::byte mask, std::byte value) : mask{mask}, value{value} {
     auto const excessBits = value & ~mask;
     if (excessBits != std::byte{0x00}) {
@@ -36,10 +37,13 @@ class ByteModification {
     }
   }
 
-  ByteModification(uint8_t from, uint8_t to, std::byte value)
-      : mask{0x00}, value{value << from} {
-    for (uint8_t i = from; i < to; i++) {
-      mask |= std::byte{0b1} << i;
+  ByteModification(uint8_t firstBitPosition, uint8_t bitWidth, std::byte value)
+      : mask{0x00}, value{value << firstBitPosition} {
+    if (firstBitPosition + bitWidth > 8) {
+      throw std::runtime_error{"Bit modificications exceed byte width."};
+    }
+    for (uint8_t i = 0; i < bitWidth; i++) {
+      mask |= std::byte{0b1} << (firstBitPosition + i);
     }
   }
 
