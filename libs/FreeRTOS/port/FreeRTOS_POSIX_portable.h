@@ -1,6 +1,6 @@
 // This file is an unmodified copy of
 // /opt/FreeRTOS-POSIX/FreeRTOS-Plus-POSIX/include/portable/FreeRTOS_POSIX_portable_default.h
-
+// NOLINTBEGIN
 /*
  * Amazon FreeRTOS POSIX V1.1.0
  * Copyright (C) 2018 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
@@ -165,3 +165,4 @@
 /**@} */
 
 #endif /* ifndef _FREERTOS_POSIX_PORTABLE_DEFAULT_H_ */
+// NOLINTEND

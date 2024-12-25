@@ -14,7 +14,12 @@ private:
 
 public:
     Bus(Instance instance, GpioPin clock, GpioPin data);
-    ~Bus();
+    Bus(Bus&&) = default;
+    Bus(Bus const&) = delete;
+    Bus& operator=(Bus&&) = default;
+    Bus& operator=(Bus const&) = delete;
+    ~Bus() override;
+
     TransferResult read(Address slave, std::span<std::byte> buffer) override;
     TransferResult write(Address slave,
                          std::span<std::byte const> buffer) override;

@@ -13,9 +13,7 @@ Address::operator std::byte() const {
     return address;
 }
 
-Slave::Slave(Bus& bus, Address address)
-    : bus{bus},
-      address{std::move(address)} {}
+Slave::Slave(Bus& bus, Address address) : bus{bus}, address{address} {}
 
 TransferResult Slave::read(std::span<std::byte> buffer) {
     return bus.read(address, buffer);
