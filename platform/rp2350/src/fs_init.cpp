@@ -8,8 +8,8 @@
 #include <filesystem/vfs.h>
 #include <hardware/clocks.h>
 
-#include <stdio.h>
-#include <string.h>
+#include <cstdio>
+#include <cstring>
 
 bool fs_init(void) {
     printf("fs_init FAT on SD card\n");
