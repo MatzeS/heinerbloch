@@ -188,8 +188,8 @@ CommunicationResult Sensor::readCalibrationData() {
         return {};
     }
 
-    std::array<std::byte, 25> firstCalibrationDataSectionBuffer;
-    std::array<std::byte, 8> secondCalibrationDataSectionBuffer;
+    std::array<std::byte, 25> firstCalibrationDataSectionBuffer{};
+    std::array<std::byte, 8> secondCalibrationDataSectionBuffer{};
     auto const firstCalibrationDataSection =
         std::span{firstCalibrationDataSectionBuffer};
     auto const secondCalibrationDataSection =
@@ -251,7 +251,7 @@ CommunicationResult Sensor::readCalibrationData() {
         std::to_integer<int16_t>(secondCalibrationDataSection[3]) << 4);
     auto const h4_lsb = std::to_integer<int16_t>(
         secondCalibrationDataSection[4] & std::byte{0x0F});
-    calibrationData->H4 = h4_msb | h4_lsb;
+    calibrationData->H4 = static_cast<int16_t>(h4_msb | h4_lsb);
 
     // H5 wants to be yet anotherkind of special and is big endian again, but
     // also sliced.
@@ -282,7 +282,7 @@ tl::expected<Data, Error> Sensor::readData() {
     }
 
     auto const measurementDataAddress = std::byte{0xF7};
-    std::array<std::byte, 8> dataBuffer;
+    std::array<std::byte, 8> dataBuffer{};
     auto const result = readRegisters(measurementDataAddress, dataBuffer);
     if (not result.has_value()) {
         return tl::make_unexpected(result.error());
@@ -290,21 +290,18 @@ tl::expected<Data, Error> Sensor::readData() {
 
     auto const data = std::span{dataBuffer};
 
-    uint32_t uncompensatedPressure;
-    decodeInto(data.subspan(0), std::endian::big, uncompensatedPressure);
-    uncompensatedPressure >>= 12;
-
-    uint32_t uncompensatedTemperature;
-    decodeInto(data.subspan(3), std::endian::big, uncompensatedTemperature);
-    uncompensatedTemperature >>= 12;
-
-    uint16_t uncompensatedHumidity;
-    decodeInto(data.subspan(6), std::endian::big, uncompensatedHumidity);
+    auto const uncompensatedPressure =
+        decode<uint32_t>(data.subspan(0), std::endian::big) >> 12;
+    auto const uncompensatedTemperature =
+        decode<uint32_t>(data.subspan(3), std::endian::big) >> 12;
+    auto const uncompensatedHumidity =
+        decode<uint16_t>(data.subspan(6), std::endian::big);
 
     // While the BME280 datasheet an reference implementation are a disgusting
     // piece of garbage, cleaning up the following cluster fuck of compensation
     // math would be an endless waste of time without proper documentation of
-    // the underlying math. The code was only modified to fix linter offenses.
+    // the underlying math.
+    // NOLINTBEGIN
     int32_t temperature;
     uint32_t humidity;
     uint32_t pressure;
@@ -397,10 +394,11 @@ tl::expected<Data, Error> Sensor::readData() {
             pressure = pressure_min;
         }
     }
+    // NOLINTEND
 
-    return {{.temperature = double(temperature) / 100,
-             .humidity = double(humidity) / 1024,
-             .pressure = double(pressure) / 100}};
+    return {{.temperature = static_cast<double>(temperature) / 100,
+             .humidity = static_cast<double>(humidity) / 1024,
+             .pressure = static_cast<double>(pressure) / 100}};
 }
 
 }  // namespace BME280

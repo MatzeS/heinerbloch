@@ -57,9 +57,9 @@ class FakeSensor {
 
 public:
     TransferResult read(std::span<std::byte> buffer) {
-        for (size_t i = 0; i < buffer.size(); i++) {
+        for (auto& e : buffer) {
             auto const offset = readAddress - startAddress;
-            buffer[i] = data[offset];
+            e = data[offset];
             readAddress++;
         }
 

@@ -44,7 +44,8 @@ public:
                      std::byte value)
         : mask{0x00},
           value{value << firstBitPosition} {
-        if (firstBitPosition + bitWidth > 8) {
+        auto const byteWidth = 8;
+        if (firstBitPosition + bitWidth > byteWidth) {
             throw std::runtime_error{"Bit modificications exceed byte width."};
         }
         for (uint8_t i = 0; i < bitWidth; i++) {
