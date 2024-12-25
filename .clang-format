@@ -1,2 +1,20 @@
-BasedOnStyle: Chromium
+ColumnLimit: 80
+BasedOnStyle: Google
+IndentWidth: 4
+AccessModifierOffset: -4
 AllowShortIfStatementsOnASingleLine: WithoutElse
+AllowShortFunctionsOnASingleLine: Empty
+PackConstructorInitializers: CurrentLine
+BinPackParameters: false
+AllowAllParametersOfDeclarationOnNextLine: false
+IncludeBlocks: Regroup
+IncludeCategories:
+# First project related headers
+# then libraries
+# tHen system headers
+  - Regex:           '^".*"$'
+    Priority:        1
+  - Regex:           '^<.*/.*>$'
+    Priority:        2
+  - Regex:           '^<.*>$'
+    Priority:        3
