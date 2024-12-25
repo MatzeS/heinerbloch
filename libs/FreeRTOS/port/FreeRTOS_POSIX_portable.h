@@ -59,12 +59,12 @@
 /**@{ */
 #ifndef posixconfigMQ_MAX_MESSAGES
 #define posixconfigMQ_MAX_MESSAGES \
-  10 /**< Maximum number of messages in an mq at one time. */
+    10 /**< Maximum number of messages in an mq at one time. */
 #endif
 
 #ifndef posixconfigMQ_MAX_SIZE
 #define posixconfigMQ_MAX_SIZE \
-  128 /**< Maximum size (in bytes) of each message. */
+    128 /**< Maximum size (in bytes) of each message. */
 #endif
 /**@} */
 
@@ -75,15 +75,15 @@
  */
 /**@{ */
 #ifndef PTHREAD_STACK_MIN
-#define PTHREAD_STACK_MIN    \
-  configMINIMAL_STACK_SIZE * \
-      sizeof(                \
-          StackType_t) /**< Minimum size in bytes of thread stack storage. */
+#define PTHREAD_STACK_MIN                                              \
+    configMINIMAL_STACK_SIZE *                                         \
+        sizeof(StackType_t) /**< Minimum size in bytes of thread stack \
+                               storage. */
 #endif
 #ifndef NAME_MAX
-#define NAME_MAX                                                           \
-  64 /**< Maximum number of bytes in a filename (not including terminating \
-        null). */
+#define NAME_MAX                                                             \
+    64 /**< Maximum number of bytes in a filename (not including terminating \
+          null). */
 #endif
 #ifndef SEM_VALUE_MAX
 #define SEM_VALUE_MAX 0x7FFFU /**< Maximum value of a sem_t. */
@@ -111,25 +111,25 @@
 #endif
 #ifndef posixconfigENABLE_PTHREAD_ATTR_T
 #define posixconfigENABLE_PTHREAD_ATTR_T \
-  1 /**< pthread_attr_t in sys/types.h   \
-     */
+    1 /**< pthread_attr_t in sys/types.h \
+       */
 #endif
 #ifndef posixconfigENABLE_PTHREAD_COND_T
 #define posixconfigENABLE_PTHREAD_COND_T \
-  1 /**< pthread_cond_t in sys/types.h   \
-     */
+    1 /**< pthread_cond_t in sys/types.h \
+       */
 #endif
 #ifndef posixconfigENABLE_PTHREAD_CONDATTR_T
 #define posixconfigENABLE_PTHREAD_CONDATTR_T \
-  1 /**< pthread_condattr_t in sys/types.h */
+    1 /**< pthread_condattr_t in sys/types.h */
 #endif
 #ifndef posixconfigENABLE_PTHREAD_MUTEX_T
 #define posixconfigENABLE_PTHREAD_MUTEX_T \
-  1 /**< pthread_mutex_t in sys/types.h */
+    1 /**< pthread_mutex_t in sys/types.h */
 #endif
 #ifndef posixconfigENABLE_PTHREAD_MUTEXATTR_T
 #define posixconfigENABLE_PTHREAD_MUTEXATTR_T \
-  1 /**< pthread_mutexattr_t in sys/types.h */
+    1 /**< pthread_mutexattr_t in sys/types.h */
 #endif
 #ifndef posixconfigENABLE_PTHREAD_T
 #define posixconfigENABLE_PTHREAD_T 1 /**< pthread_t in sys/types.h */
@@ -157,7 +157,7 @@
 #endif
 #ifndef posixconfigENABLE_PTHREAD_BARRIER_T
 #define posixconfigENABLE_PTHREAD_BARRIER_T \
-  1 /**< pthread_barrier_t in sys/types.h */
+    1 /**< pthread_barrier_t in sys/types.h */
 #endif
 #ifndef posixconfigENABLE_SCHED_PARAM
 #define posixconfigENABLE_SCHED_PARAM 1 /**< sched_param in sched.h */
