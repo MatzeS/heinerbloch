@@ -1,3 +1,4 @@
+// NOLINTBEGIN
 /*
  * FreeRTOS V202111.00
  * Copyright (C) 2020 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
@@ -159,3 +160,4 @@ to exclude the API function. */
 /* A header file that defines trace macro can be included here. */
 
 #endif /* FREERTOS_CONFIG_H */
+// NOLINTEND
