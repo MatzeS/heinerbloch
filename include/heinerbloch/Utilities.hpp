@@ -20,3 +20,34 @@ constexpr T byteswap(T value) noexcept {
   std::ranges::reverse(value_representation);
   return std::bit_cast<T>(value_representation);
 }
+
+class ByteModification {
+ private:
+  std::byte mask;
+  std::byte value;
+
+ public:
+  ByteModification(std::byte mask, std::byte value) : mask{mask}, value{value} {
+    auto const excessBits = value & ~mask;
+    if (excessBits != std::byte{0x00}) {
+      throw std::runtime_error(
+          "The value byte contains data which would be masked, this is "
+          "probably not intentional.");
+    }
+  }
+
+  ByteModification(uint8_t from, uint8_t to, std::byte value)
+      : mask{0x00}, value{value << from} {
+    for (uint8_t i = from; i < to; i++) {
+      mask |= std::byte{0b1} << i;
+    }
+  }
+
+  std::byte apply(std::byte data) const {
+    // clear all masked bits
+    data &= ~mask;
+    // set all value bits
+    data |= value;
+    return data;
+  }
+};
