@@ -2,14 +2,26 @@ name: Build firmware
 run-name: build-firmware / (${{ github.ref }})
 on: push
 jobs:
+  code-health-check:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/matzes/heinerbloch-devenv:latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - run: git config --global --add safe.directory ${GITHUB_WORKSPACE}
+      - run: rake build:linux
+      - run: rake build:rp2350
+      - run: pre-commit run --all-files
+
   build-firmware:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/matzes/heinerbloch-devenv:latest
     steps:
-      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-
       - name: Check out repository code
         uses: actions/checkout@v4
         with:
@@ -25,3 +37,16 @@ jobs:
             platform/rp2350/build/heinerbloch-rp2350.bin
             platform/rp2350/build/heinerbloch-rp2350.elf
             platform/rp2350/build/heinerbloch-rp2350.uf2
+
+  unit-test:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/matzes/heinerbloch-devenv:latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - run: rake build:linux
+      - run: rake test:unit
