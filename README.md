@@ -1,5 +1,7 @@
 # Heinerbloch
 
+The right way.
+
 Experimental playground for Raspberry Pi Pico related firmware development focusing on the RP2350.
 
 ## Development Setup
