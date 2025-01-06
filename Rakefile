@@ -2,6 +2,11 @@
 
 desc 'devcontainer related commands'
 namespace 'dev' do
+  desc 'builds the dev container'
+  task :build do
+    sh 'devcontainer build   --workspace-folder .'
+  end
+
   desc 'starts the dev container'
   task :start do
     sh 'devcontainer up --workspace-folder .'

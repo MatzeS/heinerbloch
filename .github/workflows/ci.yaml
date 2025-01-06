@@ -1,0 +1,87 @@
+on: push
+jobs:
+
+  build-linux:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/matzes/heinerbloch-devenv:latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - run: rake build:linux
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux-build
+          path: platform/linux/build
+
+
+  build-rp2350:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/matzes/heinerbloch-devenv:latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - run: rake build:rp2350
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rp2350-build
+          path: platform/rp2350/build
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rp2350-firmware
+          path: |
+            platform/rp2350/build/heinerbloch-rp2350.bin
+            platform/rp2350/build/heinerbloch-rp2350.elf
+            platform/rp2350/build/heinerbloch-rp2350.uf2
+
+  unit-test:
+    needs: build-linux
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/matzes/heinerbloch-devenv:latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+      - uses: actions/download-artifact@v4
+        with:
+          name: linux-build
+          path: platform/linux/build
+
+      - run: chmod +x platform/linux/build/build-tests/heinerbloch_tests
+      - run: rake test:unit
+
+  code-health-check:
+    needs:
+      - build-linux
+      - build-rp2350
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/matzes/heinerbloch-devenv:latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: linux-build
+          path: platform/linux/build
+      - uses: actions/download-artifact@v4
+        with:
+          name: rp2350-build
+          path: platform/rp2350/build
+
+      - run: git config --global --add safe.directory ${GITHUB_WORKSPACE}
+      - run: pre-commit run --all-files
