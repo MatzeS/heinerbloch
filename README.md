@@ -1,6 +1,6 @@
 # Heinerbloch
 
-The right way.
+[![.github/workflows/ci.yaml](https://github.com/MatzeS/heinerbloch/actions/workflows/ci.yaml/badge.svg?branch=main&event=push)](https://github.com/MatzeS/heinerbloch/actions/workflows/ci.yaml)
 
 Experimental playground for Raspberry Pi Pico related firmware development focusing on the RP2350.
 
