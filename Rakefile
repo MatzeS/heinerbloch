@@ -88,3 +88,16 @@ namespace 'setup' do
     sh 'udevadm trigger'
   end
 end
+
+namespace 'lint' do
+  task :cpp do
+    files = `git ls-tree HEAD -r | awk '{ print $4 }'`.split
+    files = files.select { |f| f =~ /.*\.(cpp|hpp|c|h)$/ }
+
+    rp2350_files = files.select { |f| f.start_with?('platform/rp2350') }
+    standard_files = files - rp2350_files
+
+    sh "clang-tidy -p=platform/linux/build #{standard_files.join(' ')}"
+    sh "clang-tidy -p=platform/rp2350/build #{rp2350_files.join(' ')}"
+  end
+end
