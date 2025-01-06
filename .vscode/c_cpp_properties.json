@@ -1,0 +1,15 @@
+{
+    "version": 4,
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [],
+            "defines": [],
+            "compilerPath": "/usr/bin/arm-none-eabi-g++",
+            "cStandard": "c17",
+            "cppStandard": "gnu++20",
+            "intelliSenseMode": "gcc-arm",
+            "compileCommands": "${workspaceFolder}/platform/rp2350/build/compile_commands.json"
+        }
+    ]
+}
