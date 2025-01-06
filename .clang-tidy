@@ -1,6 +1,5 @@
----
 WarningsAsErrors: '*'
-Checks: '
+Checks: |
   clang-diagnostic-*,
   clang-analyzer-*,
   bugprone-*,
@@ -19,7 +18,6 @@ Checks: '
   -cppcoreguidelines-pro-type-reinterpret-cast,
   google-explicit-constructor,
   google-readability-casting,
-  '
 CheckOptions:
   - key: cppcoreguidelines-special-member-functions.AllowSoleDefaultDtor
     value: 'true'

@@ -9,12 +9,12 @@ BinPackParameters: false
 AllowAllParametersOfDeclarationOnNextLine: false
 IncludeBlocks: Regroup
 IncludeCategories:
-# First project related headers
-# then libraries
-# tHen system headers
-  - Regex:           '^".*"$'
-    Priority:        1
-  - Regex:           '^<.*/.*>$'
-    Priority:        2
-  - Regex:           '^<.*>$'
-    Priority:        3
+  # First project related headers
+  # then libraries
+  # tHen system headers
+  - Regex: '^".*"$'
+    Priority: 1
+  - Regex: '^<.*/.*>$'
+    Priority: 2
+  - Regex: '^<.*>$'
+    Priority: 3
