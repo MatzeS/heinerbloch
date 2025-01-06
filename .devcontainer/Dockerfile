@@ -75,3 +75,5 @@ RUN rm /opt/install-quicktype.sh
 # Install gtest
 RUN apt-get -y install \
     libgtest-dev
+
+LABEL org.opencontainers.image.source https://github.com/MatzeS/heinerbloch
