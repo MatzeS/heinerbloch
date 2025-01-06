@@ -2,6 +2,7 @@
 # See https://pre-commit.com/hooks.html for more hooks
 exclude: '.*\.patch$'
 repos:
+
 -   repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v3.2.0
     hooks:
@@ -14,10 +15,17 @@ repos:
         - "--autofix"
         - "--indent=4"
         - "--no-sort-keys"
+
+- repo: https://github.com/rhysd/actionlint
+  rev: v1.7.6
+  hooks:
+  - id: actionlint
+
 -   repo: https://github.com/shellcheck-py/shellcheck-py
     rev: v0.10.0.1
     hooks:
     -   id: shellcheck
+
 -   repo: https://github.com/rubocop/rubocop
     rev: v1.68.0
     hooks:
@@ -30,12 +38,13 @@ repos:
         args:
             - "-i"
 
+# TODO: these depend on current build files (e.g. compile comands,
+# hence a build needs to be done first, maybe remove and only run in CI...)
       - id: clang-tidy
         name: clang-tidy linux
         exclude: ^platform/rp2350/
         args:
             - "-p=platform/linux/build"
-
 
       - id: clang-tidy
         name: clang-tidy rp2350
