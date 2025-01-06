@@ -37,20 +37,7 @@ repos:
     rev: v1.3.5
     hooks:
       - id: clang-format
-        args:
-          - "-i"
-          # TODO: these depend on current build files (e.g. compile comands,
-          # hence a build needs to be done first, maybe remove and only run in CI...)
-      - id: clang-tidy
-        name: clang-tidy linux
-        exclude: ^platform/rp2350/
-        args:
-          - "-p=platform/linux/build"
-      - id: clang-tidy
-        name: clang-tidy rp2350
-        files: ^platform/rp2350/
-        args:
-          - "-p=platform/rp2350/build"
+        args: ["-i"]
 
   - repo: https://github.com/python-jsonschema/check-jsonschema
     rev: 0.30.0
