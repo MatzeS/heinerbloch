@@ -87,8 +87,9 @@ jobs:
 
   hardware-test:
     runs-on: teststand
+    needs: build-rp2350
     container:
-      image: ghcr.io/matzes/heinerbloch-devenv:latest
+      image: ghcr.io/matzes/heinerbloch-teststand:latest
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
