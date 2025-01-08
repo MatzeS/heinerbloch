@@ -89,8 +89,10 @@ jobs:
     runs-on: teststand
     needs: build-rp2350
     container:
-      image: ghcr.io/matzes/heinerbloch-teststand:latest
+      image: ghcr.io/matzes/heinerbloch-teststand:arm64
     steps:
+      - run: git --version
+
       - name: Check out repository code
         uses: actions/checkout@v4
         with:
