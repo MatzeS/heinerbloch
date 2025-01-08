@@ -90,6 +90,7 @@ jobs:
     needs: build-rp2350
     container:
       image: ghcr.io/matzes/heinerbloch-teststand:arm64
+      options: --device=/dev/bus/usb
     steps:
       - run: git --version
       - run: ls -la /usr
