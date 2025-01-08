@@ -68,8 +68,8 @@ end
 desc 'flash firmware to pico via debug probe'
 task 'flash' do
   sh 'openocd' \
-    ' -f interface/cmsis-dap.cfg' \
-    ' -f target/rp2350.cfg' \
+    ' -f /cmsis.cfg' \
+    ' -f /rp2350.cfg' \
     ' -c "adapter speed 5000"' \
     " -c \"program #{rp2350_build_directory}/heinerbloch-rp2350.elf verify reset exit\""
 end
