@@ -92,6 +92,7 @@ jobs:
       image: ghcr.io/matzes/heinerbloch-teststand:arm64
     steps:
       - run: git --version
+      - run: ls -la /usr
       - run: which openocd
 
       - name: Check out repository code
