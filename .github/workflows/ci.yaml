@@ -88,28 +88,28 @@ jobs:
   hardware-test:
     runs-on: teststand
     needs: build-rp2350
-    container:
-      image: ghcr.io/matzes/heinerbloch-teststand:arm64
-      options: --device=/dev/bus/usb
+    # container:
+    #   image: ghcr.io/matzes/heinerbloch-teststand:arm64
+    #   options: --device=/dev/bus/usb
     steps:
-      - run: git --version
-      - run: ls -la /usr
-      - run: which openocd
-
       - run: apt -y install udev
       - run: "echo 'SUBSYSTEM==\"usb\", ATTRS{idVendor}==\"2e8a\", ATTRS{idProduct}==\"000c\", MODE=\"0666\"' > /etc/udev/rules.d/pico-debug-probe.rules"
       - run: systemctl restart systemd-udevd.service
       - run: udevadm control --reload-rules
       - run: udevadm trigger
 
-      - name: Check out repository code
-        uses: actions/checkout@v4
-        with:
-          submodules: true
+    # - run: git --version
+    # - run: ls -la /usr
+    # - run: which openocd
 
-      - uses: actions/download-artifact@v4
-        with:
-          name: rp2350-build
-          path: platform/rp2350/build
+    # - name: Check out repository code
+    #   uses: actions/checkout@v4
+    #   with:
+    #     submodules: true
 
-      - run: "openocd -f interface/cmsis-dap.cfg -f target/rp2350.cfg -c \"adapter speed 5000\" -c \"program ./platform/rp2350/build/heinerbloch-rp2350.elf verify reset exit\""
+    # - uses: actions/download-artifact@v4
+    #   with:
+    #     name: rp2350-build
+    #     path: platform/rp2350/build
+
+    # - run: "openocd -f interface/cmsis-dap.cfg -f target/rp2350.cfg -c \"adapter speed 5000\" -c \"program ./platform/rp2350/build/heinerbloch-rp2350.elf verify reset exit\""
