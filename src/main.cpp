@@ -43,16 +43,37 @@ int main() {
 
   puts("Hello, world!");
 
-  std::filesystem::path path{"/well/x.txt"};
-  // std::filesystem::create_directories(path.parent_path());
-  std::ofstream ofs(path);
-  ofs << "this is some text in the new file\n";
-  ofs.close();
+  // std::filesystem::path path{"/well/x.txt"};
+  // // std::filesystem::create_directories(path.parent_path());
+  // std::ofstream ofs(path);
+  // ofs << "this is some text in the new file\n";
+  // ofs.close();
+
+    // size_t au_size_bytes;
+    // bool ok = sd_allocation_unit(sd_get_by_num(0), &au_size_bytes);
+    // if (!ok || !au_size_bytes)
+    //     au_size_bytes = 4194304; // Default to 4 MiB
+    // UINT n_align = au_size_bytes / sd_block_size;
+
+    // MKFS_PARM opt = {
+    //     FM_ANY,  /* Format option (FM_FAT, FM_FAT32, FM_EXFAT and FM_SFD) */
+    //     2,       /* Number of FATs */
+    //     n_align, /* Data area alignment (sector) */
+    //     0,       /* Number of root directory entries */
+    //     0        /* Cluster size (byte) */
+    // };
+    // /* Format the drive */
+    // FRESULT fr = f_mkfs("", &opt, 0, FF_MAX_SS * 2);
+    // if (FR_OK != fr) {
+    //   panic("mkfs error: %s (%d)\n", FRESULT_str(fr), fr);
+    // }
+
+  FRESULT fr;
 
   // See FatFs - Generic FAT Filesystem Module, "Application Interface",
   // http://elm-chan.org/fsw/ff/00index_e.html
   FATFS fs;
-  FRESULT fr = f_mount(&fs, "", 1);
+  fr = f_mount(&fs, "", 1);
   if (FR_OK != fr) {
     panic("f_mount error: %s (%d)\n", FRESULT_str(fr), fr);
   }

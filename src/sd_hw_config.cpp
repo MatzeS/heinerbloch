@@ -39,10 +39,41 @@ static sd_spi_if_t spi_if = {
     .ss_gpio = 9  // The SPI slave select GPIO for this SD card
 };
 
+static sd_sdio_if_t sdio = {
+    .CMD_gpio = 35,
+    .D0_gpio = 36,
+    .baud_rate =  100000,  // 20833333 Hz
+
+    // .set_drive_strength = true,
+    // .CLK_gpio_drive_strength = GPIO_DRIVE_STRENGTH_12MA,
+    // .CMD_gpio_drive_strength = GPIO_DRIVE_STRENGTH_12MA,
+    // .D0_gpio_drive_strength = GPIO_DRIVE_STRENGTH_12MA,
+    // .D1_gpio_drive_strength = GPIO_DRIVE_STRENGTH_12MA,
+    // .D2_gpio_drive_strength = GPIO_DRIVE_STRENGTH_12MA,
+    // .D3_gpio_drive_strength = GPIO_DRIVE_STRENGTH_12MA
+
+};
+
+// static sd_sdio_if_t sdio = {
+//     .CMD_gpio = 35,
+//     .D0_gpio = 36,
+//     .baud_rate = 125 * 1000 * 1000 / 6,  // 20833333 Hz
+
+//     // .set_drive_strength = true,
+//     // .CLK_gpio_drive_strength = GPIO_DRIVE_STRENGTH_12MA,
+//     // .CMD_gpio_drive_strength = GPIO_DRIVE_STRENGTH_12MA,
+//     // .D0_gpio_drive_strength = GPIO_DRIVE_STRENGTH_12MA,
+//     // .D1_gpio_drive_strength = GPIO_DRIVE_STRENGTH_12MA,
+//     // .D2_gpio_drive_strength = GPIO_DRIVE_STRENGTH_12MA,
+//     // .D3_gpio_drive_strength = GPIO_DRIVE_STRENGTH_12MA
+
+// };
+
 /* Configuration of the SD Card socket object */
 static sd_card_t sd_card = {
-    .type = SD_IF_SPI,
-    .spi_if_p = &spi_if  // Pointer to the SPI interface driving this card
+    .type = SD_IF_SDIO,
+    .sdio_if_p = &sdio,  // Pointer to the SPI interface driving this card
+  
 };
 
 /* ********************************************************************** */

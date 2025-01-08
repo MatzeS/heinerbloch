@@ -14,6 +14,8 @@ set(CMAKE_CXX_STANDARD 20)
 # https://discourse.cmake.org/t/configure-clang-tidy-when-using-an-arm-none-eabi-gcc-g-toolchain/10862
 set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
 
+add_compile_definitions(USE_PRINTF USE_DBG_PRINTF)
+
 add_subdirectory(libs)
 
 add_executable(heinerbloch
