@@ -2,7 +2,7 @@ on: push
 jobs:
 
   build-linux:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     container:
       image: ghcr.io/matzes/heinerbloch-devenv:latest
     steps:
@@ -18,7 +18,7 @@ jobs:
           path: platform/linux/build
 
   build-rp2350:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     container:
       image: ghcr.io/matzes/heinerbloch-devenv:latest
     steps:
@@ -44,7 +44,7 @@ jobs:
 
   unit-test:
     needs: build-linux
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     container:
       image: ghcr.io/matzes/heinerbloch-devenv:latest
     steps:
@@ -64,7 +64,7 @@ jobs:
     needs:
       - build-linux
       - build-rp2350
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     container:
       image: ghcr.io/matzes/heinerbloch-devenv:latest
     steps:
@@ -84,3 +84,20 @@ jobs:
 
       - run: git config --global --add safe.directory ${GITHUB_WORKSPACE}
       - run: pre-commit run --all-files
+
+  build-rp2350:
+    runs-on: teststand
+    container:
+      image: ghcr.io/matzes/heinerbloch-devenv:latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: rp2350-build
+          path: platform/rp2350/build
+
+      - run: rake flash
