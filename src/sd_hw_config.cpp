@@ -21,28 +21,18 @@ https://github.com/carlk3/no-OS-FatFS-SD-SDIO-SPI-RPi-Pico/tree/main#customizing
 
 #include "hw_config.h"
 
-/* Configuration of hardware SPI object */
-static spi_t spi = {
-    .hw_inst = spi1,  // SPI component
-    .miso_gpio = 8,
-    .mosi_gpio = 11,
-    .sck_gpio = 10,                     // GPIO number (not Pico pin number)
-    .baud_rate = 125 * 1000 * 1000 / 8  // 15625000 Hz
-    //.baud_rate = 125 * 1000 * 1000 / 6  // 20833333 Hz
-    // .baud_rate = 125 * 1000 * 1000 / 4  // 31250000 Hz
-    //.baud_rate = 125 * 1000 * 1000 / 2  // 62500000 Hz
-};
-
-/* SPI Interface */
-static sd_spi_if_t spi_if = {
-    .spi = &spi,  // Pointer to the SPI driving this card
-    .ss_gpio = 9  // The SPI slave select GPIO for this SD card
-};
-
 static sd_sdio_if_t sdio = {
+    .CLK_gpio = 34,
     .CMD_gpio = 35,
     .D0_gpio = 36,
-    .baud_rate =  100000,  // 20833333 Hz
+    .D1_gpio = 37,
+    .D2_gpio = 38,
+    .D3_gpio = 39,
+
+
+    .SDIO_PIO = pio1,
+
+    .baud_rate =  125 * 1000 * 1000 / 6 / 2,
 
     // .set_drive_strength = true,
     // .CLK_gpio_drive_strength = GPIO_DRIVE_STRENGTH_12MA,
@@ -51,23 +41,7 @@ static sd_sdio_if_t sdio = {
     // .D1_gpio_drive_strength = GPIO_DRIVE_STRENGTH_12MA,
     // .D2_gpio_drive_strength = GPIO_DRIVE_STRENGTH_12MA,
     // .D3_gpio_drive_strength = GPIO_DRIVE_STRENGTH_12MA
-
 };
-
-// static sd_sdio_if_t sdio = {
-//     .CMD_gpio = 35,
-//     .D0_gpio = 36,
-//     .baud_rate = 125 * 1000 * 1000 / 6,  // 20833333 Hz
-
-//     // .set_drive_strength = true,
-//     // .CLK_gpio_drive_strength = GPIO_DRIVE_STRENGTH_12MA,
-//     // .CMD_gpio_drive_strength = GPIO_DRIVE_STRENGTH_12MA,
-//     // .D0_gpio_drive_strength = GPIO_DRIVE_STRENGTH_12MA,
-//     // .D1_gpio_drive_strength = GPIO_DRIVE_STRENGTH_12MA,
-//     // .D2_gpio_drive_strength = GPIO_DRIVE_STRENGTH_12MA,
-//     // .D3_gpio_drive_strength = GPIO_DRIVE_STRENGTH_12MA
-
-// };
 
 /* Configuration of the SD Card socket object */
 static sd_card_t sd_card = {
@@ -99,5 +73,3 @@ sd_card_t* sd_get_by_num(size_t num) {
     return NULL;
   }
 }
-
-/* [] END OF FILE */

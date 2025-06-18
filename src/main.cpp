@@ -1,5 +1,3 @@
-
-
 /* main.c
 Copyright 2021 Carl John Kugler III
 
@@ -41,32 +39,24 @@ int main() {
   // Initialize stdio
   stdio_init_all();
 
-  puts("Hello, world!");
+  sleep_ms(500);
+  
+  puts("Starting up!");
 
-  // std::filesystem::path path{"/well/x.txt"};
-  // // std::filesystem::create_directories(path.parent_path());
-  // std::ofstream ofs(path);
-  // ofs << "this is some text in the new file\n";
-  // ofs.close();
+  puts("Enabling power");
+  #define HEINERBOX_ENABLE_SENSORS (46)
+  gpio_init(HEINERBOX_ENABLE_SENSORS);
+  gpio_set_dir(HEINERBOX_ENABLE_SENSORS, GPIO_OUT);
+  gpio_put(HEINERBOX_ENABLE_SENSORS, 1);
 
-    // size_t au_size_bytes;
-    // bool ok = sd_allocation_unit(sd_get_by_num(0), &au_size_bytes);
-    // if (!ok || !au_size_bytes)
-    //     au_size_bytes = 4194304; // Default to 4 MiB
-    // UINT n_align = au_size_bytes / sd_block_size;
-
-    // MKFS_PARM opt = {
-    //     FM_ANY,  /* Format option (FM_FAT, FM_FAT32, FM_EXFAT and FM_SFD) */
-    //     2,       /* Number of FATs */
-    //     n_align, /* Data area alignment (sector) */
-    //     0,       /* Number of root directory entries */
-    //     0        /* Cluster size (byte) */
-    // };
-    // /* Format the drive */
-    // FRESULT fr = f_mkfs("", &opt, 0, FF_MAX_SS * 2);
-    // if (FR_OK != fr) {
-    //   panic("mkfs error: %s (%d)\n", FRESULT_str(fr), fr);
-    // }
+  puts("Enabling SD Card Power");
+  #define HEINERBOX_ENABLE_SDCARD  (31)
+  gpio_init(HEINERBOX_ENABLE_SDCARD);
+  gpio_set_dir(HEINERBOX_ENABLE_SDCARD, GPIO_OUT);
+  gpio_put(HEINERBOX_ENABLE_SDCARD, 0);
+  sleep_ms(100);
+  gpio_put(HEINERBOX_ENABLE_SDCARD, 1);  
+  sleep_ms(100);
 
   FRESULT fr;
 
