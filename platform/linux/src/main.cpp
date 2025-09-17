@@ -1,5 +1,7 @@
 #include "heinerbloch/calculator.hpp"
 
+#include "heinerbloch/Task.h"
+
 #include <cstdio>
 #include <vector>
 
@@ -8,6 +10,13 @@ int main() {
     auto const result = add(numbers);
 
     printf("result: %d\n", result);
+
+
+    auto const foo = 42;
+
+    Task foo([foo](){
+        printf("Hi there I am the task: %d\n", foo);
+    });
 
     experiment();
 }
