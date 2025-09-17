@@ -38,4 +38,7 @@ target_link_libraries(heinerbloch-rp2350
 )
 pico_add_extra_outputs(heinerbloch-rp2350)
 
+pico_enable_stdio_uart(heinerbloch-rp2350 0)
+pico_enable_stdio_usb(heinerbloch-rp2350 1)
+
 add_subdirectory(../../ build-heinerbloch)
