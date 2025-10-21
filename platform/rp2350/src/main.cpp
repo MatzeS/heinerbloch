@@ -9,6 +9,10 @@
 #include <cstdio>
 #include <vector>
 
+void bar(uint8_t baz) {
+    printf("Hi there I am the bar task: %d\n", baz);
+}
+
 int main() {
     stdio_init_all();
     sleep_ms(4000);
@@ -24,6 +28,10 @@ int main() {
         Task foo_tasktisch([foo](){
             printf("Hi there I am the task: %d\n", foo);
         });
+
+        Task bar_taskisch(
+            std::bind(bar, 69)
+        );
 
     printf("End of main\n");
     vTaskStartScheduler();
